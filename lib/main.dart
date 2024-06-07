@@ -1,72 +1,56 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:snapfeast/misc/constants.dart';
+import 'package:snapfeast/misc/routes.dart';
 
-void main() {
-  runApp(const MyApp());
+
+
+void main() async {
+  await ScreenUtil.ensureScreenSize();
+  runApp(const ProviderScope(child: SnapFeast()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SnapFeast extends StatefulWidget {
+  const SnapFeast({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: FlexColorScheme.light(
-        scheme: FlexScheme.orangeM3
-      ).toTheme,
-      darkTheme: FlexColorScheme.dark(
-          scheme: FlexScheme.orangeM3
-      ).toTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+  State<SnapFeast> createState() => _SnapFeastState();
+}
+
+class _SnapFeastState extends State<SnapFeast> {
+
+  late GoRouter router;
+
+  @override
+  void initState() {
+    super.initState();
+    router = GoRouter(
+      initialLocation: Pages.onboard.path,
+      routes: routes
     );
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+    return ScreenUtilInit(
+      builder: (_, child) => MaterialApp.router(
+        title: 'SnapFeast',
+        themeMode: ThemeMode.dark,
+        darkTheme: FlexColorScheme.dark(
+            scheme: FlexScheme.orangeM3,
+          fontFamily: "Montserrat",
+        ).toTheme,
+        routerConfig: router,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      splitScreenMode: true,
+      ensureScreenSize: true,
+      useInheritedMediaQuery: true,
+      designSize: const Size(390, 800),
+      minTextAdapt: true,
     );
   }
 }
