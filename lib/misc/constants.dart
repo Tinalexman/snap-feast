@@ -9,6 +9,8 @@ const Color p400 = Color(0xFFE38C79);
 const Color p500 = Color(0xFFFFBC6C);
 const Color p600 = Color(0xFFF9F871);
 
+const Color neutral2 = Color.fromARGB(35, 152, 152, 152);
+
 // IMAGES USED
 // https://www.freepik.com/free-psd/3d-background-with-assortment-gastronomy-dishes_40778967.htm#query=food%20illustration&position=0&from_view=keyword&track=ais_user&uuid=6a9d12f8-7faf-4456-9ba8-3fc48eea5f5f
 
@@ -23,6 +25,8 @@ extension ContextExtension on BuildContext {
 
 class Pages {
   static String get onboard => "onboarding";
-
+  static String get register => "register";
+  static String get login => "login";
+  static String get camera => "camera";
 }
 

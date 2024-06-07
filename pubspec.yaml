@@ -35,6 +35,7 @@ dependencies:
   dropdown_button2:
   animated_snack_bar:
   awesome_notifications:
+  camera_camera:
 
 dev_dependencies:
   flutter_test:

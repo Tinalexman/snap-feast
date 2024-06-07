@@ -41,8 +41,10 @@ class _SnapFeastState extends State<SnapFeast> {
         title: 'SnapFeast',
         themeMode: ThemeMode.dark,
         darkTheme: FlexColorScheme.dark(
-            scheme: FlexScheme.orangeM3,
+            scheme: FlexScheme.mandyRed,
+          scaffoldBackground: p100,
           fontFamily: "Montserrat",
+          useMaterial3: true,
         ).toTheme,
         routerConfig: router,
       ),

@@ -15,6 +15,7 @@ class _OnboardingPageState extends State<OnboardingPage>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<Offset> animation;
+  late Animation<double> fade;
 
   @override
   void initState() {
@@ -31,7 +32,12 @@ class _OnboardingPageState extends State<OnboardingPage>
       CurvedAnimation(parent: controller, curve: Curves.easeOut),
     );
 
-    Future.delayed(const Duration(seconds: 1), () => controller.forward());
+    fade = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: controller, curve: Curves.easeIn),
+    );
+
+    Future.delayed(
+        const Duration(milliseconds: 500), () => controller.forward());
   }
 
   @override
@@ -47,17 +53,20 @@ class _OnboardingPageState extends State<OnboardingPage>
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 390.w,
-            height: 450.h,
-            decoration: BoxDecoration(
-              image: const DecorationImage(
-                image: AssetImage("assets/images/food.jpg"),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.only(
-                bottomRight: Radius.elliptical(150.r, 20.r),
-                bottomLeft: Radius.elliptical(300.r, 50.r),
+          FadeTransition(
+            opacity: fade,
+            child: Container(
+              width: 390.w,
+              height: 450.h,
+              decoration: BoxDecoration(
+                image: const DecorationImage(
+                  image: AssetImage("assets/images/food.jpg"),
+                  fit: BoxFit.cover,
+                ),
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.elliptical(180.r, 20.r),
+                  bottomLeft: Radius.elliptical(300.r, 50.r),
+                ),
               ),
             ),
           ),
@@ -86,13 +95,16 @@ class _OnboardingPageState extends State<OnboardingPage>
                   ),
                   SizedBox(height: 40.h),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () =>
+                        context.router.pushReplacementNamed(Pages.register),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: p100,
-                        fixedSize: Size(170.w, 50.h),
-                        elevation: 1.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.h),),),
+                      backgroundColor: p100,
+                      fixedSize: Size(170.w, 50.h),
+                      elevation: 1.0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.h),
+                      ),
+                    ),
                     child: Text(
                       "Get Started",
                       style: context.textTheme.bodyLarge!.copyWith(
