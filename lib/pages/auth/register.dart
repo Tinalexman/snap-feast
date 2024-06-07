@@ -17,40 +17,21 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage>
-    with SingleTickerProviderStateMixin {
+class _RegisterPageState extends State<RegisterPage> {
   final GlobalKey<FormState> formKey = GlobalKey();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  late TabController tabController;
-
   Uint8List? pickedImage;
 
-  final Map<String, String> _authDetails = {
-    "email": "",
-    "password": "",
-    "firstName": "",
-    "lastName": "",
-  };
+  final Map<String, String> _authDetails = {"email": "", "password": ""};
 
   int index = 0;
   bool showPassword = false;
 
   @override
-  void initState() {
-    super.initState();
-
-    tabController = TabController(
-      length: 2,
-      vsync: this,
-    );
-    unFocus();
-  }
-
-  @override
   void dispose() {
-    tabController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -193,7 +174,9 @@ class _RegisterPageState extends State<RegisterPage>
                               child: Text(
                                 "Log In",
                                 style: context.textTheme.bodyMedium!.copyWith(
-                                    color: p400, fontWeight: FontWeight.w600),
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ],
