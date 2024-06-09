@@ -22,16 +22,29 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController firstNameController = TextEditingController();
+  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController ageController = TextEditingController();
 
   Uint8List? pickedImage;
 
-  final Map<String, String> _authDetails = {"email": "", "password": ""};
+  final Map<String, dynamic> authDetails = {
+    "firstName": "",
+    "lastName": "",
+    "age": "",
+    "email": "",
+    "password": "",
+    "face": "",
+  };
 
   int index = 0;
   bool showPassword = false;
 
   @override
   void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    ageController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -54,18 +67,19 @@ class _RegisterPageState extends State<RegisterPage> {
                 Text(
                   "SnapFeast",
                   style: context.textTheme.displaySmall!.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: p100,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: "Montserrat"),
                 ),
                 Text(
                   index == 0
                       ? "Creating your account has never being easier"
-                      : "Now let's see what you look like",
+                      : index == 1 ? "Now let's see what you look like" :
+                  "You're almost done",
                   style: context.textTheme.bodyMedium!.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
+                      color: p150,
+                      fontWeight: FontWeight.w500,
+                      fontFamily: "Montserrat"),
                 ),
                 SizedBox(height: 32.h),
                 if (index == 0)
@@ -82,7 +96,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           prefix: Icon(
                             Icons.mail_outline_rounded,
                             size: 18.r,
-                            color: Colors.white,
+                            color: p100,
                           ),
                           type: TextInputType.emailAddress,
                           onValidate: (value) {
@@ -92,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                             return null;
                           },
-                          onSave: (value) => _authDetails["email"] = value!,
+                          onSave: (value) => authDetails["email"] = value!,
                           hint: "Email",
                         ),
                         SizedBox(height: 10.h),
@@ -100,14 +114,12 @@ class _RegisterPageState extends State<RegisterPage> {
                           obscure: !showPassword,
                           width: 390.w,
                           height: 40.h,
-                          fillColor: neutral2,
-                          borderColor: Colors.transparent,
                           controller: passwordController,
                           type: TextInputType.text,
                           prefix: Icon(
                             Icons.lock_outline_rounded,
                             size: 18.r,
-                            color: Colors.white,
+                            color: p100,
                           ),
                           suffix: GestureDetector(
                             onTap: () =>
@@ -120,7 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                     : Icons.visibility_off,
                                 size: 18.r,
                                 key: ValueKey<bool>(showPassword),
-                                color: Colors.white,
+                                color: p150,
                               ),
                             ),
                           ),
@@ -133,7 +145,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             }
                             return null;
                           },
-                          onSave: (value) => _authDetails["password"] = value!,
+                          onSave: (value) => authDetails["password"] = value!,
                           hint: "Password",
                         ),
                         SizedBox(
@@ -142,7 +154,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                             minimumSize: Size(390.w, 50.h),
-                            backgroundColor: Colors.white,
+                            backgroundColor: p100,
                             elevation: 1.0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.h),
@@ -150,10 +162,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           onPressed: () => setState(() => index = 1),
                           child: Text(
-                            "Proceed",
+                            "Continue",
                             style: context.textTheme.bodyLarge!.copyWith(
-                              color: p100,
+                              color: Colors.white,
                               fontWeight: FontWeight.w700,
+                              fontFamily: "Montserrat",
                             ),
                           ),
                         ),
@@ -163,7 +176,10 @@ class _RegisterPageState extends State<RegisterPage> {
                           children: [
                             Text(
                               "Already have an account? ",
-                              style: context.textTheme.bodyMedium,
+                              style: context.textTheme.bodyMedium!.copyWith(
+                                color: p150,
+                                fontFamily: "Montserrat",
+                              ),
                             ),
                             SizedBox(
                               width: 5.w,
@@ -174,8 +190,9 @@ class _RegisterPageState extends State<RegisterPage> {
                               child: Text(
                                 "Log In",
                                 style: context.textTheme.bodyMedium!.copyWith(
-                                  color: Colors.white,
+                                  color: p100,
                                   fontWeight: FontWeight.bold,
+                                  fontFamily: "Montserrat",
                                 ),
                               ),
                             ),
@@ -193,15 +210,21 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       SizedBox(height: 40.h),
                       GestureDetector(
-                        onTap: () => context.router
-                            .pushNamed(Pages.camera)
-                            .then((response) async {
-                          if (response == null) return;
-                          String path = (response as File).path;
-                          pickedImage =
-                              await FileManager.convertSingleToData(path);
-                          setState(() {});
-                        }),
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => ImageDialog(
+                            text: openCameraDialog,
+                            onProceed: () => context.router
+                                .pushNamed(Pages.camera)
+                                .then((response) async {
+                              if (response == null) return;
+                              String path = (response as File).path;
+                              pickedImage =
+                                  await FileManager.convertSingleToData(path);
+                              setState(() {});
+                            }),
+                          ),
+                        ),
                         child: Container(
                           width: 390.w,
                           height: 250.r,
@@ -216,14 +239,15 @@ class _RegisterPageState extends State<RegisterPage> {
                             children: [
                               Icon(
                                 Icons.camera_alt_outlined,
-                                color: Colors.white,
+                                color: p100,
                                 size: 32.r,
                               ),
                               Text(
                                 "Open Camera",
                                 style: context.textTheme.bodyMedium!.copyWith(
-                                  color: Colors.white60,
+                                  color: p150,
                                   fontWeight: FontWeight.w500,
+                                  fontFamily: "Montserrat",
                                 ),
                               ),
                             ],
@@ -236,8 +260,10 @@ class _RegisterPageState extends State<RegisterPage> {
                       Center(
                         child: Text(
                           "- OR -",
-                          style: context.textTheme.titleLarge!
-                              .copyWith(fontWeight: FontWeight.w600),
+                          style: context.textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Montserrat",
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -246,23 +272,30 @@ class _RegisterPageState extends State<RegisterPage> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(390.w, 50.h),
-                          backgroundColor: Colors.white,
+                          backgroundColor: p100,
                           elevation: 1.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.h),
                           ),
                         ),
-                        onPressed: () =>
-                            FileManager.single(type: FileType.image)
-                                .then((resp) {
-                          if (resp == null) return;
-                          setState(() => pickedImage = resp.data);
-                        }),
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (context) => ImageDialog(
+                            text: openGalleryDialog,
+                            onProceed: () =>
+                                FileManager.single(type: FileType.image)
+                                    .then((resp) {
+                              if (resp == null) return;
+                              setState(() => pickedImage = resp.data);
+                            }),
+                          ),
+                        ),
                         child: Text(
                           "Choose Image from Device",
                           style: context.textTheme.bodyLarge!.copyWith(
-                            color: p100,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
+                            fontFamily: "Montserrat",
                           ),
                         ),
                       )
@@ -299,6 +332,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               style: context.textTheme.bodyLarge!.copyWith(
                                 color: p400,
                                 fontWeight: FontWeight.w600,
+                                fontFamily: "Montserrat",
                               ),
                             ),
                             Icon(
@@ -315,23 +349,117 @@ class _RegisterPageState extends State<RegisterPage> {
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           minimumSize: Size(390.w, 50.h),
-                          backgroundColor: Colors.white,
+                          backgroundColor: p100,
                           elevation: 1.0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.h),
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          File file = File.fromRawPath(pickedImage!);
+                          authDetails["face"] = file;
+                          setState(() => index = 2);
+                        },
                         child: Text(
-                          "Create Account",
+                          "Continue",
                           style: context.textTheme.bodyLarge!.copyWith(
-                            color: p100,
+                            color: Colors.white,
                             fontWeight: FontWeight.w700,
+                            fontFamily: "Montserrat",
                           ),
                         ),
                       )
                     ],
                   ),
+                if(index == 2)
+                  Column(
+                    children: [
+                      SpecialForm(
+                        width: 390.w,
+                        height: 40.h,
+                        controller: firstNameController,
+                        prefix: Icon(
+                          Icons.person_2_rounded,
+                          size: 18.r,
+                          color: p100,
+                        ),
+                        onValidate: (value) {
+                          if (value!.isEmpty) {
+                            showToast("Let us know your first name", context);
+                            return '';
+                          }
+                          return null;
+                        },
+                        onSave: (value) => authDetails["firstName"] = value!,
+                        hint: "First Name",
+                      ),
+                      SizedBox(height: 10.h),
+                      SpecialForm(
+                        width: 390.w,
+                        height: 40.h,
+                        controller: lastNameController,
+                        prefix: Icon(
+                          Icons.person_2_rounded,
+                          size: 18.r,
+                          color: p100,
+                        ),
+                        onValidate: (value) {
+                          if (value!.isEmpty) {
+                            showToast("Let us know your last name", context);
+                            return '';
+                          }
+                          return null;
+                        },
+                        onSave: (value) => authDetails["lastName"] = value!,
+                        hint: "Last Name",
+                      ),
+                      SizedBox(height: 10.h),
+                      SpecialForm(
+                        width: 390.w,
+                        height: 40.h,
+                        controller: ageController,
+                        type: TextInputType.number,
+                        prefix: Icon(
+                          Icons.cake,
+                          size: 18.r,
+                          color: p100,
+                        ),
+                        onValidate: (value) {
+                          if (value!.isEmpty) {
+                            showToast("Let us know your age", context);
+                            return '';
+                          }
+                          return null;
+                        },
+                        onSave: (value) => authDetails["age"] = value!,
+                        hint: "Age",
+                      ),
+                      SizedBox(
+                        height: 150.h,
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(390.w, 50.h),
+                          backgroundColor: p100,
+                          elevation: 1.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.h),
+                          ),
+                        ),
+                        onPressed: () {
+                          context.router.pushNamed(Pages.details);
+                        },
+                        child: Text(
+                          "Continue",
+                          style: context.textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Montserrat",
+                          ),
+                        ),
+                      )
+                    ],
+                  )
               ],
             ),
           ),

@@ -39,10 +39,9 @@ class _SnapFeastState extends State<SnapFeast> {
     return ScreenUtilInit(
       builder: (_, child) => MaterialApp.router(
         title: 'SnapFeast',
-        themeMode: ThemeMode.dark,
-        darkTheme: FlexColorScheme.dark(
+        themeMode: ThemeMode.system,
+        darkTheme: FlexColorScheme.light(
             scheme: FlexScheme.mandyRed,
-          scaffoldBackground: p100,
           fontFamily: "Montserrat",
           useMaterial3: true,
         ).toTheme,

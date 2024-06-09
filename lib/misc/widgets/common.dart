@@ -4,9 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:snapfeast/misc/constants.dart';
 
-const SpinKitCubeGrid loader = SpinKitCubeGrid(
+const Widget loader = SpinKitDancingSquare(
   color: p400,
-  size: 20,
+  size: 40,
 );
 
 class TabHeaderDelegate extends SliverPersistentHeaderDelegate {
@@ -153,8 +153,10 @@ class SpecialForm extends StatelessWidget {
           }
         },
         cursorColor: p400,
-        style:
-            context.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.w500),
+        style: context.textTheme.bodyMedium!.copyWith(
+          fontWeight: FontWeight.w500,
+          fontFamily: "Montserrat",
+        ),
         decoration: InputDecoration(
           errorMaxLines: 1,
           errorStyle: const TextStyle(height: 0, fontSize: 0),
@@ -182,25 +184,23 @@ class SpecialForm extends StatelessWidget {
                 )
               : null,
           focusedBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
+            borderRadius: BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
             borderSide: const BorderSide(color: Colors.transparent),
           ),
           border: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
+            borderRadius: BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
             borderSide: const BorderSide(color: Colors.transparent),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius:
-                BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
+            borderRadius: BorderRadius.circular(maxLines > 1 ? 15.r : 10.r),
             borderSide: const BorderSide(color: Colors.transparent),
           ),
           hintText: hint,
           hintStyle: hintStyle ??
               context.textTheme.bodyMedium!.copyWith(
                 fontWeight: FontWeight.w400,
-                color: Colors.white60,
+                color: p150,
+                fontFamily: "Montserrat",
               ),
         ),
         onChanged: (value) {
@@ -364,6 +364,82 @@ class ComboBox extends StatelessWidget {
         menuItemStyleData: MenuItemStyleData(
           height: itemHeight ?? 40,
           padding: itemPadding ?? const EdgeInsets.only(left: 14, right: 14),
+        ),
+      ),
+    );
+  }
+}
+
+class ImageDialog extends StatelessWidget {
+  final String text;
+  final VoidCallback onProceed;
+
+  const ImageDialog({
+    super.key,
+    required this.text,
+    required this.onProceed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      elevation: 0.0,
+      backgroundColor: Colors.transparent,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+        height: 200.h,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15.r),
+        ),
+        child: Column(
+          children: [
+            Text(
+              "Note",
+              style: context.textTheme.headlineSmall!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontFamily: "Montserrat",
+              ),
+            ),
+            SizedBox(height: 20.h),
+            Text(
+              text,
+              style: context.textTheme.bodyMedium!.copyWith(
+                fontWeight: FontWeight.w500,
+                fontFamily: "Montserrat",
+              ),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 40.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Text(
+                    "Cancel",
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      fontFamily: "Montserrat",
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    onProceed();
+                  },
+                  child: Text(
+                    "Proceed",
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "Montserrat",
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );

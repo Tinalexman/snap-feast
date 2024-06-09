@@ -22,7 +22,7 @@ class _OnboardingPageState extends State<OnboardingPage>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(milliseconds: 1200),
     );
 
     animation = Tween<Offset>(
@@ -49,7 +49,6 @@ class _OnboardingPageState extends State<OnboardingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -83,14 +82,16 @@ class _OnboardingPageState extends State<OnboardingPage>
                     style: context.textTheme.displaySmall!.copyWith(
                       color: p100,
                       fontWeight: FontWeight.bold,
+                      fontFamily: "Montserrat"
                     ),
                   ),
                   SizedBox(height: 20.h),
                   Text(
                     "EXPERIENCE THE MOST DELICIOUS FOODS WITH US",
                     style: context.textTheme.bodyLarge!.copyWith(
-                      color: p100,
+                      color: p150,
                       fontWeight: FontWeight.w500,
+                      fontFamily: "Montserrat"
                     ),
                   ),
                   SizedBox(height: 40.h),
@@ -110,6 +111,7 @@ class _OnboardingPageState extends State<OnboardingPage>
                       style: context.textTheme.bodyLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.w700,
+                        fontFamily: "Montserrat"
                       ),
                     ),
                   )

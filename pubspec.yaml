@@ -36,6 +36,7 @@ dependencies:
   animated_snack_bar:
   awesome_notifications:
   camera_camera:
+  image:
 
 dev_dependencies:
   flutter_test:

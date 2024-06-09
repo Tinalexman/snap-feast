@@ -16,30 +16,17 @@ void showToast(String message, BuildContext context) {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
         decoration: BoxDecoration(
-          color: p400,
+          color: p100,
           borderRadius: BorderRadius.circular(5.r),
         ),
         alignment: Alignment.center,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(
-              Icons.error_outline_outlined,
-              color: Colors.white,
-              size: 20.r,
-            ),
-            SizedBox(
-              width: 160.w,
-              child: Text(
-                message,
-                style: context.textTheme.bodySmall!.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ),
-          ],
+        child: Text(
+          message,
+          style: context.textTheme.bodySmall!.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontFamily: "Montserrat",
+          ),
         ),
       ),
     ),
@@ -162,3 +149,17 @@ bool validateForm(GlobalKey<FormState> formKey) {
   }
   return false;
 }
+
+String getTimeOfDay() {
+  final DateTime now = DateTime.now();
+  final int hour = now.hour;
+
+  if(hour < 12) {
+    return "Good Morning";
+  } else if(hour >= 12 && hour <= 16) {
+    return "Good Afternoon";
+  }
+  return "Good Evening";
+}
+
+String roboImage(String id) => "https://gravatar.com/avatar/${fastHash(id).toString()}?s=400&d=robohash&r=x";

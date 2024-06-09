@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 
 
 const Color p100 = Color(0xFF393939);
+const Color p150 = Color.fromRGBO(57, 57, 57, 0.7);
 const Color p200 = Color(0xFF885465);
 const Color p300 = Color(0xFFA96C7B);
 const Color p400 = Color(0xFFE38C79);
@@ -28,5 +29,15 @@ class Pages {
   static String get register => "register";
   static String get login => "login";
   static String get camera => "camera";
+  static String get home => "home";
+  static String get details => "account-details";
 }
 
+
+const String openCameraDialog = "You are about to use the camera. "
+"Please make sure you are in a well lit environment. "
+"Remove all hats and glasses.";
+
+const String openGalleryDialog = "You are about to select an image from your device. "
+"Please choose an image that shows your face well. "
+"Make sure you are not wearing hats or glasses.";
