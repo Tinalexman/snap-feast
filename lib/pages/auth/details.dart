@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/misc/constants.dart';
 
 class AccountDetailsPage extends StatefulWidget {
@@ -12,14 +13,7 @@ class AccountDetailsPage extends StatefulWidget {
 }
 
 class _AccountDetailsPageState extends State<AccountDetailsPage> {
-  late List<String> pickedFoods, keys;
-
-  @override
-  void initState() {
-    super.initState();
-    keys = availableFoods.keys.toList();
-    pickedFoods = [];
-  }
+  final List<String> pickedFoods = [];
 
   @override
   Widget build(BuildContext context) {
@@ -60,9 +54,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     mainAxisExtent: 230.h,
                   ),
                   itemBuilder: (_, index) {
-                    String food = keys[index];
-                    String image = availableFoods[food]!;
-                    bool picked = pickedFoods.contains(food);
+                    Food food = availableFoods[index];
+                    String image = food.image;
+                    bool picked = pickedFoods.contains(food.name);
 
                     return Column(
                       children: [
@@ -70,9 +64,9 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                         GestureDetector(
                           onTap: () {
                             if (picked) {
-                              pickedFoods.remove(food);
+                              pickedFoods.remove(food.name);
                             } else {
-                              pickedFoods.add(food);
+                              pickedFoods.add(food.name);
                             }
                             setState(() {});
                           },
@@ -103,7 +97,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                           vertical: 10.h,
                                         ),
                                         child: Text(
-                                          food,
+                                          food.name,
                                           style: context.textTheme.bodyLarge!
                                               .copyWith(
                                             fontFamily: "Montserrat",

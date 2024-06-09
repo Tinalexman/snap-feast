@@ -41,7 +41,7 @@ void showToast(String message, BuildContext context) {
 
 void unFocus() => FocusManager.instance.primaryFocus?.unfocus();
 
-String formatRawAmount(int price) => formatAmount(price.toString());
+String formatRawAmount(double price) => formatAmount(price.toStringAsFixed(0));
 
 String formatAmount(String price) {
   String priceInText = "";
@@ -65,6 +65,8 @@ String format(double val) =>
 
 String formatDateRaw(DateTime dateTime, {bool shorten = false}) =>
     formatDate(DateFormat("dd/MM/yyyy").format(dateTime), shorten: shorten);
+
+String currency() => NumberFormat.simpleCurrency(name: "NGN").currencySymbol;
 
 String formatDate(String dateTime, {bool shorten = false}) {
   int firIndex = dateTime.indexOf("/");

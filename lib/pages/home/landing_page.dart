@@ -9,6 +9,7 @@ import 'package:snapfeast/misc/providers.dart';
 import 'package:snapfeast/pages/home/home.dart';
 import 'package:snapfeast/pages/home/orders.dart';
 import 'package:snapfeast/pages/home/profile.dart';
+import 'package:snapfeast/pages/home/wallet.dart';
 
 class LandingPage extends ConsumerStatefulWidget {
   const LandingPage({super.key});
@@ -26,6 +27,7 @@ class _LandingPageState extends ConsumerState<LandingPage> {
     children = const [
       Homepage(),
       OrdersPage(),
+      WalletPage(),
       ProfilePage(),
     ];
   }
@@ -57,7 +59,6 @@ class _LandingPageState extends ConsumerState<LandingPage> {
           color: p150,
           fontWeight: FontWeight.normal,
         ),
-
         elevation: 0,
         items: [
           BottomNavigationBarItem(
@@ -85,8 +86,19 @@ class _LandingPageState extends ConsumerState<LandingPage> {
           BottomNavigationBarItem(
             icon: AnimatedSwitcherZoom.zoomIn(
               duration: const Duration(milliseconds: 300),
-              child: CachedNetworkImage(
+              child: Icon(
+                Icons.wallet,
+                color: index == 2 ? p400 : p150,
                 key: ValueKey<bool>(index == 2),
+              ),
+            ),
+            label: "Wallet",
+          ),
+          BottomNavigationBarItem(
+            icon: AnimatedSwitcherZoom.zoomIn(
+              duration: const Duration(milliseconds: 300),
+              child: CachedNetworkImage(
+                key: ValueKey<bool>(index == 3),
                 imageUrl: roboImage(image),
                 errorWidget: (_, __, c) => CircleAvatar(
                   radius: 20.r,
@@ -102,7 +114,7 @@ class _LandingPageState extends ConsumerState<LandingPage> {
                   backgroundColor: Colors.white24,
                 ),
                 imageBuilder: (_, provider) => GestureDetector(
-                  onTap: () => ref.watch(dashboardIndex.notifier).state = 2,
+                  onTap: () => ref.watch(dashboardIndex.notifier).state = 3,
                   child: CircleAvatar(
                     backgroundImage: provider,
                     radius: 16.r,
