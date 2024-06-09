@@ -2,7 +2,7 @@ import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:intl/intl.dart';
 import 'package:snapfeast/misc/constants.dart';
 
 void showToast(String message, BuildContext context) {
@@ -62,6 +62,9 @@ String formatAmount(String price) {
 
 String format(double val) =>
     val.toStringAsFixed(val.truncateToDouble() == val ? 0 : 2);
+
+String formatDateRaw(DateTime dateTime, {bool shorten = false}) =>
+    formatDate(DateFormat("dd/MM/yyyy").format(dateTime), shorten: shorten);
 
 String formatDate(String dateTime, {bool shorten = false}) {
   int firIndex = dateTime.indexOf("/");
@@ -154,12 +157,13 @@ String getTimeOfDay() {
   final DateTime now = DateTime.now();
   final int hour = now.hour;
 
-  if(hour < 12) {
+  if (hour < 12) {
     return "Good Morning";
-  } else if(hour >= 12 && hour <= 16) {
+  } else if (hour >= 12 && hour <= 16) {
     return "Good Afternoon";
   }
   return "Good Evening";
 }
 
-String roboImage(String id) => "https://gravatar.com/avatar/${fastHash(id).toString()}?s=400&d=robohash&r=x";
+String roboImage(String id) =>
+    "https://gravatar.com/avatar/${fastHash(id).toString()}?s=400&d=robohash&r=x";

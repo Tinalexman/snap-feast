@@ -41,3 +41,16 @@ const String openCameraDialog = "You are about to use the camera. "
 const String openGalleryDialog = "You are about to select an image from your device. "
 "Please choose an image that shows your face well. "
 "Make sure you are not wearing hats or glasses.";
+
+
+const Map<String, dynamic> availableFoods = {
+  "Jollof & Fried Rice with Chicken": "assets/images/jf rice.jpg",
+  "Amala with Goat Meat": "assets/images/amala.jpg",
+  "Porridge with Vegetables": "assets/images/porridge.jpg",
+  "White Rice & Beans and Fried Stew": "assets/images/white rice.jpg",
+  "Yam and Fried Eggs": "assets/images/yam.jpeg",
+  "Pounded Yam with Egusi Soup": "assets/images/pounded yam.jpg",
+  "Spaghetti Bolognese with Sauce": "assets/images/spag.jpg",
+  "Chicken & Chips": "assets/images/c and c.jpg",
+  "Fruit Salad": "assets/images/salad.jpg",
+};

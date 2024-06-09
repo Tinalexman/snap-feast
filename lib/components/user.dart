@@ -17,6 +17,8 @@ class User extends Equatable {
     this.email = "",
   });
 
+  String get fullName => "$lastName $firstName";
+
   @override
   List<Object> get props => [id];
 }

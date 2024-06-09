@@ -7,6 +7,8 @@ import 'package:snapfeast/misc/constants.dart';
 import 'package:snapfeast/misc/functions.dart';
 import 'package:snapfeast/misc/providers.dart';
 import 'package:snapfeast/pages/home/home.dart';
+import 'package:snapfeast/pages/home/orders.dart';
+import 'package:snapfeast/pages/home/profile.dart';
 
 class LandingPage extends ConsumerStatefulWidget {
   const LandingPage({super.key});
@@ -23,8 +25,8 @@ class _LandingPageState extends ConsumerState<LandingPage> {
     super.initState();
     children = const [
       Homepage(),
-      SizedBox(),
-      SizedBox(),
+      OrdersPage(),
+      ProfilePage(),
     ];
   }
 
