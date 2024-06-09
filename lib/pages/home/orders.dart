@@ -14,10 +14,10 @@ class OrdersPage extends ConsumerStatefulWidget {
 }
 
 class _OrdersPageState extends ConsumerState<OrdersPage> {
+  bool liked = true;
 
   @override
   Widget build(BuildContext context) {
-
     Food food = ref.watch(foodProvider);
     Iterable<String> foodComponents = food.components.keys;
     Iterable<String> foodNutrition = food.nutritionalInfo.keys;
@@ -34,7 +34,33 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 100.h),
+                SizedBox(height: 60.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        ref.watch(dashboardIndex.notifier).state = 0;
+                        ref.watch(foodCountProvider.notifier).state = 0;
+                      },
+                      child: Icon(
+                        Icons.chevron_left_rounded,
+                        color: p100,
+                        size: 32.r,
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () => setState(() => liked = !liked),
+                      icon: Icon(
+                        liked ? Icons.favorite : Icons.favorite_outline,
+                        color: liked ? p400 : neutral2,
+                      ),
+                      iconSize: 26.r,
+                    ),
+                  ],
+                ),
+                SizedBox(height: 40.h),
                 Text(
                   food.name,
                   style: context.textTheme.headlineMedium!.copyWith(
@@ -131,7 +157,8 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                     ),
                     SizedBox(width: 20.w),
                     GestureDetector(
-                      onTap: () => ref.watch(foodCountProvider.notifier).state++,
+                      onTap: () =>
+                          ref.watch(foodCountProvider.notifier).state++,
                       child: Container(
                         width: 32.r,
                         height: 32.r,

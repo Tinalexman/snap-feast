@@ -38,6 +38,7 @@ dependencies:
   camera_camera:
   image:
   intl:
+  uuid:
 
 dev_dependencies:
   flutter_test:
