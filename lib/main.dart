@@ -50,7 +50,7 @@ class _SnapFeastState extends ConsumerState<SnapFeast> with WidgetsBindingObserv
       routes: routes
     );
 
-    Future.delayed(const Duration(seconds: 1), load);
+    Future.delayed(Duration.zero, load);
   }
 
   @override

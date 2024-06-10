@@ -11,7 +11,7 @@ class OrderRepository extends BaseRepository<FoodOrder> {
   Future<FoodOrder> fromJson(Map<String, dynamic> map) async {
     return FoodOrder(
       timestamp: DateTime.fromMillisecondsSinceEpoch(map["timestamp"]),
-      foodIndex: map["index"],
+      foodIndex: map["foodIndex"],
       servings: map["servings"],
     );
   }
@@ -19,7 +19,7 @@ class OrderRepository extends BaseRepository<FoodOrder> {
   @override
   Future<Map<String, dynamic>> toJson(FoodOrder value) async {
     return {
-      'index': value.foodIndex,
+      'foodIndex': value.foodIndex,
       'servings': value.servings,
       'timestamp': value.timestamp.millisecondsSinceEpoch,
     };

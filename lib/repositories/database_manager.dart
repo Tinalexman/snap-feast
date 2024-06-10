@@ -26,7 +26,7 @@ class DatabaseManager {
    CREATE TABLE ${OrderRepository.ordersTable} (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
      timestamp INTEGER NOT NULL,
-     index INTEGER NOT NULL,
+     foodIndex INTEGER NOT NULL,
      servings INTEGER NOT NULL
    )
  ''');
