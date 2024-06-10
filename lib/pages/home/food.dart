@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snapfeast/components/food.dart';
@@ -45,6 +46,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
           ),
           iconSize: 26.r,
         ),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
         centerTitle: true,
         title: Text(
           "Food",
@@ -466,7 +468,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                       amount: price,
                     );
 
-                    ref.watch(foodOrdersProvider.notifier).state.add(order);
+                    ref.watch(foodOrdersProvider).add(order);
                     ref
                         .watch(transactionsProvider.notifier)
                         .state
@@ -508,7 +510,7 @@ class FundsDialog extends StatelessWidget {
       backgroundColor: Colors.transparent,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        height: 185.h,
+        height: 200.h,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.r),

@@ -51,74 +51,77 @@ class _OnboardingPageState extends State<OnboardingPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          FadeTransition(
-            opacity: fade,
-            child: Container(
-              width: 390.w,
-              height: 450.h,
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/food.jpg"),
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.elliptical(180.r, 20.r),
-                  bottomLeft: Radius.elliptical(300.r, 50.r),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            FadeTransition(
+              opacity: fade,
+              child: Container(
+                width: 390.w,
+                height: 450.h,
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage("assets/images/food.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomRight: Radius.elliptical(180.r, 20.r),
+                    bottomLeft: Radius.elliptical(300.r, 50.r),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(height: 40.h),
-          SlideTransition(
-            position: animation,
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40.w),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Discover our food world",
-                    style: context.textTheme.displaySmall!.copyWith(
-                        color: p100,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Montserrat"),
-                  ),
-                  SizedBox(height: 20.h),
-                  Text(
-                    "EXPERIENCE THE MOST DELICIOUS FOODS WITH US",
-                    style: context.textTheme.bodyLarge!.copyWith(
-                        color: p150,
-                        fontWeight: FontWeight.w500,
-                        fontFamily: "Montserrat"),
-                  ),
-                  SizedBox(height: 40.h),
-                  ElevatedButton(
-                    onPressed: () =>
-                        context.router.pushReplacementNamed(Pages.home), // TODO: Replace with Pages.register
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: p100,
-                      fixedSize: Size(170.w, 50.h),
-                      elevation: 1.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.h),
-                      ),
-                    ),
-                    child: Text(
-                      "Get Started",
-                      style: context.textTheme.bodyLarge!.copyWith(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
+            SizedBox(height: 40.h),
+            SlideTransition(
+              position: animation,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 40.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Discover our food world",
+                      style: context.textTheme.displaySmall!.copyWith(
+                          color: p100,
+                          fontWeight: FontWeight.bold,
                           fontFamily: "Montserrat"),
                     ),
-                  )
-                ],
+                    SizedBox(height: 20.h),
+                    Text(
+                      "EXPERIENCE THE MOST DELICIOUS FOODS WITH US",
+                      style: context.textTheme.bodyLarge!.copyWith(
+                          color: p150,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: "Montserrat"),
+                    ),
+                    SizedBox(height: 40.h),
+                    ElevatedButton(
+                      onPressed: () =>
+                          context.router.pushReplacementNamed(Pages.register),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: p100,
+                        fixedSize: Size(170.w, 50.h),
+                        elevation: 1.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.h),
+                        ),
+                      ),
+                      child: Text(
+                        "Get Started",
+                        style: context.textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Montserrat"),
+                      ),
+                    ),
+                    SizedBox(height: 40.h),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

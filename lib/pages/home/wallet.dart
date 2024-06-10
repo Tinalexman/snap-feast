@@ -69,16 +69,16 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 15.h),
                   Text(
                     "${currency()} ${formatRawAmount(amount)}",
-                    style: context.textTheme.displayMedium!.copyWith(
+                    style: context.textTheme.displaySmall!.copyWith(
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                     ),
                   ),
-                  SizedBox(height: 20.h),
+                  SizedBox(height: 15.h),
                   Text(
                     "Last Funded: ${formatDateRaw(DateTime.now())}",
                     style: context.textTheme.bodyMedium!.copyWith(

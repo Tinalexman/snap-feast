@@ -122,7 +122,7 @@ class FoodOrderReceipt extends StatelessWidget {
         border: Border.all(color: neutral2),
       ),
       child: SizedBox(
-        height: 160.h,
+        height: 180.h,
         child: Column(
           children: [
             Container(

@@ -7,6 +7,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snapfeast/components/order.dart';
 import 'package:snapfeast/components/transaction.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:snapfeast/misc/constants.dart';
 import 'package:snapfeast/misc/providers.dart';
 import 'package:snapfeast/misc/routes.dart';
@@ -17,8 +18,6 @@ import 'package:snapfeast/repositories/user_repository.dart';
 
 import 'components/user.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -27,7 +26,15 @@ void main() async {
   await ScreenUtil.ensureScreenSize();
   await DatabaseManager.init();
 
-  runApp(const ProviderScope(child: SnapFeast()));
+  runApp(
+     // DevicePreview(
+    //   enabled: true,
+    //   builder: (_) =>
+    //
+
+       const ProviderScope(child: SnapFeast()),
+     // ),
+  );
 }
 
 class SnapFeast extends ConsumerStatefulWidget {
@@ -37,18 +44,15 @@ class SnapFeast extends ConsumerStatefulWidget {
   ConsumerState<SnapFeast> createState() => _SnapFeastState();
 }
 
-class _SnapFeastState extends ConsumerState<SnapFeast> with WidgetsBindingObserver {
-
+class _SnapFeastState extends ConsumerState<SnapFeast>
+    with WidgetsBindingObserver {
   late GoRouter router;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    router = GoRouter(
-      initialLocation: Pages.onboard.path,
-      routes: routes
-    );
+    router = GoRouter(initialLocation: Pages.onboard.path, routes: routes);
 
     Future.delayed(Duration.zero, load);
   }
@@ -66,11 +70,13 @@ class _SnapFeastState extends ConsumerState<SnapFeast> with WidgetsBindingObserv
         title: 'SnapFeast',
         themeMode: ThemeMode.system,
         darkTheme: FlexColorScheme.light(
-            scheme: FlexScheme.mandyRed,
+          scheme: FlexScheme.mandyRed,
           fontFamily: "Montserrat",
           useMaterial3: true,
         ).toTheme,
         routerConfig: router,
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
       ),
       splitScreenMode: true,
       ensureScreenSize: true,
@@ -112,7 +118,7 @@ class _SnapFeastState extends ConsumerState<SnapFeast> with WidgetsBindingObserv
     ref.watch(transactionsProvider.notifier).state.clear();
     ref.watch(transactionsProvider.notifier).state.addAll(transactions);
 
-    if(user != null) {
+    if (user != null) {
       ref.watch(userProvider.notifier).state = user;
     }
   }
@@ -126,5 +132,4 @@ class _SnapFeastState extends ConsumerState<SnapFeast> with WidgetsBindingObserv
       await save();
     }
   }
-
 }

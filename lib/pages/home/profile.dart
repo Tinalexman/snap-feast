@@ -75,229 +75,232 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 40.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: roboImage(user.image),
-                    errorWidget: (_, __, c) => Container(
-                      width: 150.w,
-                      height: 200.h,
-                      decoration: BoxDecoration(
-                        color: p100,
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                    ),
-                    progressIndicatorBuilder: (_, __, c) => Container(
-                      width: 150.w,
-                      height: 200.h,
-                      decoration: BoxDecoration(
-                        color: p150,
-                        borderRadius: BorderRadius.circular(15.r),
-                      ),
-                    ),
-                    imageBuilder: (_, provider) => Container(
-                      width: 150.w,
-                      height: 150.h,
-                      decoration: BoxDecoration(
-                        color: neutral2,
-                        borderRadius: BorderRadius.circular(15.r),
-                        image: DecorationImage(
-                          image: provider,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 160.w,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Name",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
-                          ),
-                        ),
-                        Text(
-                          user.fullName,
-                          style: context.textTheme.bodyLarge!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(height: 20.h),
-                        Text(
-                          "Email",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
-                          ),
-                        ),
-                        Text(
-                          user.email,
-                          style: context.textTheme.bodyLarge!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        SizedBox(height: 20.h),
-                        Text(
-                          "Age",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
-                          ),
-                        ),
-                        Text(
-                          user.age.toString(),
-                          style: context.textTheme.bodyLarge!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 40.h),
-              SizedBox(
-                height: 180.h,
-                child: GridView(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisExtent: 90.h,
-                    crossAxisSpacing: 50.w,
-                  ),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 40.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Column(
-                      children: [
-                        Text(
-                          "Today's Orders",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
+                    CachedNetworkImage(
+                      imageUrl: roboImage(user.image),
+                      errorWidget: (_, __, c) => Container(
+                        width: 150.w,
+                        height: 200.h,
+                        decoration: BoxDecoration(
+                          color: p100,
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                      ),
+                      progressIndicatorBuilder: (_, __, c) => Container(
+                        width: 150.w,
+                        height: 200.h,
+                        decoration: BoxDecoration(
+                          color: p150,
+                          borderRadius: BorderRadius.circular(15.r),
+                        ),
+                      ),
+                      imageBuilder: (_, provider) => Container(
+                        width: 150.w,
+                        height: 150.h,
+                        decoration: BoxDecoration(
+                          color: neutral2,
+                          borderRadius: BorderRadius.circular(15.r),
+                          image: DecorationImage(
+                            image: provider,
                           ),
                         ),
-                        Text(
-                          totalOrders.toString(),
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
-                    Column(
-                      children: [
-                        Text(
-                          "Total Orders",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
+                    SizedBox(
+                      width: 160.w,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Name",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
                           ),
-                        ),
-                        Text(
-                          totalOrders.toString(),
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
+                          Text(
+                            user.fullName,
+                            style: context.textTheme.bodyLarge!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "Wallet Balance",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
+                          SizedBox(height: 20.h),
+                          Text(
+                            "Email",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "${currency()} ${formatRawAmount(amount)}",
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
+                          Text(
+                            user.email,
+                            style: context.textTheme.bodyLarge!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Text(
-                          "Total Food Cost",
-                          style: context.textTheme.bodyMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            color: p150,
+                          SizedBox(height: 20.h),
+                          Text(
+                            "Age",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "${currency()} ${formatRawAmount(amount)}",
-                          style: context.textTheme.headlineMedium!.copyWith(
-                            fontFamily: "Montserrat",
-                            fontWeight: FontWeight.w700,
+                          Text(
+                            user.age.toString(),
+                            style: context.textTheme.bodyLarge!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-              Center(
-                child: Text(
-                  "Most Ordered Food",
-                  style: context.textTheme.bodyMedium!.copyWith(
-                    fontFamily: "Montserrat",
-                    color: p150,
+                SizedBox(height: 40.h),
+                SizedBox(
+                  height: 180.h,
+                  child: GridView(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: 95.h,
+                      crossAxisSpacing: 50.w,
+                    ),
+                    children: [
+                      Column(
+                        children: [
+                          Text(
+                            "Today's Orders",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
+                          ),
+                          Text(
+                            totalOrders.toString(),
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "Total Orders",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
+                          ),
+                          Text(
+                            totalOrders.toString(),
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "Wallet Balance",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
+                          ),
+                          Text(
+                            "${currency()} ${formatRawAmount(amount)}",
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(
+                            "Total Food Cost",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              color: p150,
+                            ),
+                          ),
+                          Text(
+                            "${currency()} ${formatRawAmount(amount)}",
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              ),
-              SizedBox(height: 10.h),
-              Container(
-                height: 150.h,
-                width: 390.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.r),
-                  image: DecorationImage(
-                    image: AssetImage(mostOrdered.image),
-                    fit: BoxFit.cover,
+                Center(
+                  child: Text(
+                    "Most Ordered Food",
+                    style: context.textTheme.bodyMedium!.copyWith(
+                      fontFamily: "Montserrat",
+                      color: p150,
+                    ),
                   ),
                 ),
-                child: Container(
+                SizedBox(height: 10.h),
+                Container(
                   height: 150.h,
                   width: 390.w,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.r),
-                    color: Colors.black54,
-                  ),
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 10.w,
-                    vertical: 5.h,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    mostOrdered.name,
-                    style: context.textTheme.bodyLarge!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      fontFamily: "Montserrat",
-                      color: Colors.white,
+                    image: DecorationImage(
+                      image: AssetImage(mostOrdered.image),
+                      fit: BoxFit.cover,
                     ),
-                    textAlign: TextAlign.center,
+                  ),
+                  child: Container(
+                    height: 150.h,
+                    width: 390.w,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.r),
+                      color: Colors.black54,
+                    ),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 10.w,
+                      vertical: 5.h,
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      mostOrdered.name,
+                      style: context.textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.w600,
+                        fontFamily: "Montserrat",
+                        color: Colors.white,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                SizedBox(height: 40.h),
+              ],
+            ),
           ),
         ),
       ),

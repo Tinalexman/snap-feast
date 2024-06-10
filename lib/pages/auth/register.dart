@@ -79,7 +79,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: context.textTheme.bodyMedium!.copyWith(
                       color: p150,
                       fontWeight: FontWeight.w500,
-                      fontFamily: "Montserrat"),
+                      fontFamily: "Montserrat",
+                  ),
+                  textAlign: TextAlign.center,
                 ),
                 SizedBox(height: 32.h),
                 if (index == 0)
