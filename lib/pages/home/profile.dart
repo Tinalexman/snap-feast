@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/components/user.dart';
 import 'package:snapfeast/misc/constants.dart';
 import 'package:snapfeast/misc/functions.dart';
 import 'package:snapfeast/misc/providers.dart';
+import 'package:snapfeast/repositories/user_repository.dart';
 
 class ProfilePage extends ConsumerStatefulWidget {
   const ProfilePage({super.key});
@@ -59,6 +61,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             padding: EdgeInsets.only(right: 20.w),
             child: IconButton(
               onPressed: () {
+                final UserRepository rep = GetIt.I.get();
+                rep.deleteAll();
                 context.goNamed(Pages.onboard);
                 logout(ref);
               },

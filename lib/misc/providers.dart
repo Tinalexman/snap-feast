@@ -3,7 +3,6 @@ import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/components/order.dart';
 import 'package:snapfeast/components/transaction.dart';
 import 'package:snapfeast/components/user.dart';
-import 'package:uuid/uuid.dart';
 
 const User dummyUser = User(
   id: "DUMMY",

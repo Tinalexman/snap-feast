@@ -38,7 +38,8 @@ dependencies:
   camera_camera:
   image:
   intl:
-  uuid:
+  get_it:
+  sqflite:
 
 dev_dependencies:
   flutter_test:
