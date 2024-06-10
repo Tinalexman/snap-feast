@@ -38,6 +38,10 @@ class Pages {
   static String get home => "home";
 
   static String get details => "account-details";
+
+  static String get deposit => "deposit";
+
+  static String get orders => "orders";
 }
 
 const String openCameraDialog = "You are about to use the camera. "

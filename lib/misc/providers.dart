@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snapfeast/components/food.dart';
+import 'package:snapfeast/components/order.dart';
 import 'package:snapfeast/components/transaction.dart';
 import 'package:snapfeast/components/user.dart';
 import 'package:uuid/uuid.dart';
@@ -19,38 +20,12 @@ final StateProvider<int> foodCountProvider = StateProvider((ref) => 0);
 final StateProvider<Food> foodProvider = StateProvider((ref) => const Food());
 final StateProvider<double> walletProvider = StateProvider((ref) => 0.0);
 final StateProvider<List<Transaction>> transactionsProvider =
-StateProvider((ref) {
-  Uuid uuid = const Uuid();
-
-  return [
-    Transaction(
-        timestamp: DateTime.now(),
-        type: TransactionType.credit,
-        id: uuid.v4(),
-        amount: 10000
-    ),
-    Transaction(
-        timestamp: DateTime.now(),
-        type: TransactionType.debit,
-        id: uuid.v4(),
-        amount: 6700
-    ),
-    Transaction(
-        timestamp: DateTime.now(),
-        type: TransactionType.credit,
-        id: uuid.v4(),
-        amount: 1000
-    ),
-    Transaction(
-        timestamp: DateTime.now(),
-        type: TransactionType.debit,
-        id: uuid.v4(),
-        amount: 5000
-    ),
-  ];
-});
+    StateProvider((ref) => []);
+final StateProvider<List<FoodOrder>> foodOrdersProvider =
+    StateProvider((ref) => []);
 
 void logout(WidgetRef ref) {
+  ref.invalidate(foodOrdersProvider);
   ref.invalidate(walletProvider);
   ref.invalidate(transactionsProvider);
   ref.invalidate(foodCountProvider);
