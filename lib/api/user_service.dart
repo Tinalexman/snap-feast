@@ -9,10 +9,17 @@ String token = "";
 Future<SnapfeastResponse<User?>> createUser(Map<String, dynamic> map) async {
   try {
     Response response = await dio.post("/users/", data: map);
-    Map<String, dynamic> data = response.data;
-    token = data["access_token"];
 
+    token = response.data["access_token"];
 
+    Response userResponse = await dio.get(
+      "/users/me/",
+      options: Options(
+        headers: {"Authorization": "Bearer $token"},
+      ),
+    );
+
+    Map<String, dynamic> data = userResponse.data as Map<String, dynamic>;
 
     return SnapfeastResponse(
       message: "Success",
@@ -24,6 +31,14 @@ Future<SnapfeastResponse<User?>> createUser(Map<String, dynamic> map) async {
       ),
       success: true,
     );
+  } on DioException catch (e) {
+    if (e.response?.statusCode! == 400) {
+      return const SnapfeastResponse(
+        message: "Email already registered",
+        data: null,
+        success: false,
+      );
+    }
   } catch (e) {
     log("Create User Error: $e");
   }
@@ -37,19 +52,24 @@ Future<SnapfeastResponse<User?>> createUser(Map<String, dynamic> map) async {
 
 Future<SnapfeastResponse<User?>> manualLogin(Map<String, dynamic> map) async {
   try {
-    Response tokenResponse = await dio.post("/auth/token", data: map);
-    log("${tokenResponse.data}");
-    token = tokenResponse.data as String;
+    Response tokenResponse = await dio.post(
+      "/auth/token/",
+      data: FormData.fromMap(map),
+      options: Options(
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      ),
+    );
 
-
+    token = tokenResponse.data["access_token"];
 
     Response userResponse = await dio.get(
-      "/users/me",
+      "/users/me/",
       options: Options(
         headers: {"Authorization": "Bearer $token"},
       ),
     );
-    log("${userResponse.data}");
     Map<String, dynamic> data = userResponse.data;
 
     return SnapfeastResponse(
@@ -62,6 +82,14 @@ Future<SnapfeastResponse<User?>> manualLogin(Map<String, dynamic> map) async {
       ),
       success: true,
     );
+  } on DioException catch (e) {
+    if (e.response?.statusCode! == 401) {
+      return const SnapfeastResponse(
+        message: "Wrong password",
+        data: null,
+        success: false,
+      );
+    }
   } catch (e) {
     log("Manual Login Error: $e");
   }
@@ -79,7 +107,7 @@ Future<SnapfeastResponse<User?>> faceLogin(String facePath) async {
 
   try {
     Response response = await dio.post(
-      "/users/login/face",
+      "/users/login/face/",
       data: form,
       options: Options(
         headers: {
@@ -109,9 +137,23 @@ Future<SnapfeastResponse<User?>> faceLogin(String facePath) async {
   );
 }
 
-Future<SnapfeastResponse> createFace(Map<String, dynamic> map) async {
+Future<SnapfeastResponse> createFace(String facePath) async {
+  FormData form = FormData();
+  form.files.add(MapEntry("file", await MultipartFile.fromFile(facePath)));
+
   try {
-    Response response = await dio.post("/users/me/face");
+    Response response = await dio.post(
+      "/users/me/face/",
+      data: form,
+      options: Options(
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Authorization": "Bearer $token"
+        },
+      ),
+    );
+
+    log("${response.data}");
     // Map<String, dynamic> data = response.data;
     return const SnapfeastResponse(
       message: "Success",

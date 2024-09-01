@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:animated_switcher_plus/animated_switcher_plus.dart';
@@ -26,10 +27,10 @@ class _LoginPageState extends ConsumerState<LoginPage>
 
   late TabController tabController;
 
-  Uint8List? pickedImage;
+  String? pickedImage;
 
   final Map<String, String> _authDetails = {
-    "email": "",
+    "username": "",
     "password": "",
   };
 
@@ -62,9 +63,26 @@ class _LoginPageState extends ConsumerState<LoginPage>
       return;
     }
 
+    showErrorMessage("Welcome back!");
+
     ref.watch(userProvider.notifier).state = user.data!;
     navigate();
   }
+
+  Future<void> useFaceLogin() async {
+    SnapfeastResponse face = await createFace(pickedImage!);
+    setState(() => loading = false);
+
+    if (!face.success) {
+      showErrorMessage(face.message);
+      return;
+    }
+
+    showErrorMessage("Face embeddings created!");
+
+    navigate();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -142,7 +160,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                 }
                                 return null;
                               },
-                              onSave: (value) => _authDetails["email"] = value!,
+                              onSave: (value) => _authDetails["username"] = value!,
                               hint: "Email",
                             ),
                             SizedBox(height: 10.h),
@@ -198,7 +216,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                 ),
                               ),
                               onPressed: () {
-                                if (loading) return;
+                                if (loading || !validateForm(formKey)) return;
 
                                 setState(() => loading = true);
                                 useManualLogin();
@@ -276,7 +294,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                 borderRadius: BorderRadius.circular(10.r),
                                 image: pickedImage != null
                                     ? DecorationImage(
-                                        image: MemoryImage(pickedImage!),
+                                        image: FileImage(File(pickedImage!)),
                                         fit: BoxFit.cover,
                                       )
                                     : null,

@@ -13,7 +13,6 @@ const Widget whiteLoader = SpinKitDancingSquare(
   size: 35,
 );
 
-
 class Popup extends StatelessWidget {
   const Popup({
     super.key,
@@ -340,61 +339,63 @@ class ImageDialog extends StatelessWidget {
     return Dialog(
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        height: 220.h,
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.r),
         ),
-        child: Column(
-          children: [
-            Text(
-              "Note",
-              style: context.textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.bold,
-                fontFamily: "Montserrat",
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              text,
-              style: context.textTheme.bodyMedium!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontFamily: "Montserrat",
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 20.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Text(
-                    "Cancel",
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontFamily: "Montserrat",
-                    ),
-                  ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Note",
+                style: context.textTheme.headlineSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Montserrat",
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onProceed();
-                  },
-                  child: Text(
-                    "Proceed",
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Montserrat",
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                text,
+                style: context.textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Montserrat",
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Text(
+                      "Cancel",
+                      style: context.textTheme.bodyMedium!.copyWith(
+                        fontFamily: "Montserrat",
+                      ),
                     ),
                   ),
-                )
-              ],
-            )
-          ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onProceed();
+                    },
+                    child: Text(
+                      "Proceed",
+                      style: context.textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Montserrat",
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

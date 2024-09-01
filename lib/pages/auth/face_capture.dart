@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:snapfeast/api/file_manager.dart';
+import 'package:snapfeast/api/user_service.dart';
 import 'package:snapfeast/misc/constants.dart';
+import 'package:snapfeast/misc/functions.dart';
 import 'package:snapfeast/misc/widgets/common.dart';
 
 class FaceCapture extends StatefulWidget {
@@ -16,6 +18,28 @@ class FaceCapture extends StatefulWidget {
 
 class _FaceCaptureState extends State<FaceCapture> {
   String? pickedImage;
+
+  bool loading = false;
+
+
+  void showErrorMessage(String msg) => showToast(msg, context);
+
+  void navigate() => context.router.pushReplacementNamed(Pages.home);
+
+  Future<void> useFaceCreation() async {
+    SnapfeastResponse face = await createFace(pickedImage!);
+    setState(() => loading = false);
+
+    if (!face.success) {
+      showErrorMessage(face.message);
+      return;
+    }
+
+    showErrorMessage("Face embeddings created!");
+
+    navigate();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -168,7 +192,7 @@ class _FaceCaptureState extends State<FaceCapture> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "Clear Image",
+                              "Remove Image",
                               style: context.textTheme.bodyLarge!.copyWith(
                                 color: p400,
                                 fontWeight: FontWeight.w600,
@@ -196,10 +220,19 @@ class _FaceCaptureState extends State<FaceCapture> {
                           ),
                         ),
                         onPressed: () {
-                          File file = File(pickedImage!);
-                          // authDetails["face"] = file;
+                         if(loading) return;
+                         if(pickedImage == null) {
+                           showToast("Please choose/capture a photo of yourself", context);
+                           return;
+                         }
+
+                         setState(() => loading = true);
+
+                         useFaceCreation();
                         },
-                        child: Text(
+                        child: loading
+                            ? whiteLoader
+                            :  Text(
                           "Save and Continue",
                           style: context.textTheme.bodyLarge!.copyWith(
                             color: Colors.white,
