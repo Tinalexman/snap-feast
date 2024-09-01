@@ -6,58 +6,13 @@ import 'package:snapfeast/misc/constants.dart';
 
 const Widget loader = SpinKitDancingSquare(
   color: p400,
-  size: 40,
+  size: 35,
+);
+const Widget whiteLoader = SpinKitDancingSquare(
+  color: Colors.white,
+  size: 35,
 );
 
-class TabHeaderDelegate extends SliverPersistentHeaderDelegate {
-  TabHeaderDelegate({required this.tabBar});
-
-  final TabBar tabBar;
-
-  @override
-  double get minExtent => tabBar.preferredSize.height;
-
-  @override
-  double get maxExtent => tabBar.preferredSize.height;
-
-  @override
-  Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      Container(
-        color: p100,
-        child: tabBar,
-      );
-
-  @override
-  bool shouldRebuild(TabHeaderDelegate oldDelegate) => false;
-}
-
-class WidgetHeaderDelegate extends SliverPersistentHeaderDelegate {
-  WidgetHeaderDelegate({required this.child, this.color, required this.height});
-
-  final Widget child;
-  final double height;
-  final Color? color;
-
-  @override
-  double get minExtent => height;
-
-  @override
-  double get maxExtent => height;
-
-  @override
-  Widget build(
-          BuildContext context, double shrinkOffset, bool overlapsContent) =>
-      Container(
-        color: color,
-        height: height,
-        width: 390.w,
-        child: child,
-      );
-
-  @override
-  bool shouldRebuild(TabHeaderDelegate oldDelegate) => false;
-}
 
 class Popup extends StatelessWidget {
   const Popup({

@@ -42,6 +42,9 @@ class _CameraPageState extends State<CameraPage> {
         cameraSide: CameraSide.back,
         mode: CameraMode.ratio16s9,
         onFile: flipImage,
+        onCameraFlipped: (face) {
+
+        },
       ),
     );
   }

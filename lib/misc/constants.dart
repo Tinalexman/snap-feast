@@ -42,6 +42,8 @@ class Pages {
   static String get deposit => "deposit";
 
   static String get orders => "orders";
+
+  static String get faceCapture => "face-capture";
 }
 
 const String openCameraDialog = "You are about to use the camera. "
@@ -59,7 +61,7 @@ const List<Food> availableFoods = [
     image: "assets/images/jf rice.jpg",
     price: 2500,
     rating: 4.5,
-    description: " Enjoy the perfect fusion of West African and Asian flavors "
+    description: "Enjoy the perfect fusion of West African and Asian flavors "
         "with our Jollof and Fried Rice Delight with Chicken! This mouthwatering dish "
         "combines the spicy and savory flavors of Jollof rice with the crispy and "
         "aromatic textures of fried rice, all mixed with juicy and tender chicken.",

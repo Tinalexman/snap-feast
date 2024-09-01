@@ -30,8 +30,6 @@ void main() async {
      // DevicePreview(
     //   enabled: true,
     //   builder: (_) =>
-    //
-
        const ProviderScope(child: SnapFeast()),
      // ),
   );
@@ -68,8 +66,8 @@ class _SnapFeastState extends ConsumerState<SnapFeast>
     return ScreenUtilInit(
       builder: (_, child) => MaterialApp.router(
         title: 'SnapFeast',
-        themeMode: ThemeMode.system,
-        darkTheme: FlexColorScheme.light(
+        themeMode: ThemeMode.light,
+        theme: FlexColorScheme.light(
           scheme: FlexScheme.mandyRed,
           fontFamily: "Montserrat",
           useMaterial3: true,

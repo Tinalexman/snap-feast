@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class Food extends Equatable {
+  final int id;
   final String name;
   final String image;
   final double price;
@@ -14,6 +15,7 @@ class Food extends Equatable {
   final List<String> pairings;
 
   const Food({
+    this.id = 0,
     this.name = "",
     this.image = "",
     this.price = 0,
@@ -28,5 +30,5 @@ class Food extends Equatable {
   });
 
   @override
-  List<Object?> get props => [name];
+  List<Object?> get props => [id];
 }

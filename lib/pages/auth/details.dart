@@ -4,8 +4,10 @@ import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/misc/constants.dart';
 
 class AccountDetailsPage extends StatefulWidget {
+  final Map<String, dynamic> details;
   const AccountDetailsPage({
     super.key,
+    required this.details,
   });
 
   @override
@@ -46,7 +48,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                 ),
                 SizedBox(height: 40.h),
                 SizedBox(
-                  height: 500.h,
+                  height: 520.h,
                   child: GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -144,7 +146,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     itemCount: availableFoods.length,
                   ),
                 ),
-                SizedBox(height: 40.h),
+                SizedBox(height: 20.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     minimumSize: Size(390.w, 50.h),
@@ -155,7 +157,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     ),
                   ),
                   onPressed: () {
-                    context.router.pushNamed(Pages.home);
+                    // context.router.pushNamed(Pages.home);
                   },
                   child: Text(
                     "Create Account",

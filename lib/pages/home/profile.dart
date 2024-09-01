@@ -61,10 +61,8 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
             padding: EdgeInsets.only(right: 20.w),
             child: IconButton(
               onPressed: () {
-                final UserRepository rep = GetIt.I.get();
-                rep.deleteAll();
-                context.goNamed(Pages.onboard);
                 logout(ref);
+                context.goNamed(Pages.onboard);
               },
               icon: const Icon(Boxicons.bx_log_out, color: p100),
               iconSize: 26.r,
