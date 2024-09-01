@@ -10,8 +10,6 @@ class UserRepository extends BaseRepository<User> {
   @override
   Future<User> fromJson(Map<String, dynamic> map) async {
     return User(
-      id: map["serverID"],
-      image: map["image"],
       email: map["email"],
       firstName: map["firstName"],
       lastName: map["lastName"],
@@ -22,8 +20,6 @@ class UserRepository extends BaseRepository<User> {
   @override
   Future<Map<String, dynamic>> toJson(User value) async {
     return {
-      'serverID': value.id,
-      'image': value.image,
       'email': value.email,
       'firstName': value.firstName,
       'lastName': value.lastName,

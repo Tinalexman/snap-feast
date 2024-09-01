@@ -83,7 +83,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     CachedNetworkImage(
-                      imageUrl: roboImage(user.image),
+                      imageUrl: roboImage(user.email),
                       errorWidget: (_, __, c) => Container(
                         width: 150.w,
                         height: 200.h,

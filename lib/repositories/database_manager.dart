@@ -13,8 +13,6 @@ class DatabaseManager {
         await db.execute('''
    CREATE TABLE ${UserRepository.userTable} (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
-     serverID TEXT NOT NULL,
-     image TEXT NOT NULL,
      email TEXT NOT NULL,
      firstName TEXT NOT NULL,
      lastName TEXT NOT NULL,

@@ -61,6 +61,7 @@ const List<Food> availableFoods = [
     image: "assets/images/jf rice.jpg",
     price: 2500,
     rating: 4.5,
+    id: 4,
     description: "Enjoy the perfect fusion of West African and Asian flavors "
         "with our Jollof and Fried Rice Delight with Chicken! This mouthwatering dish "
         "combines the spicy and savory flavors of Jollof rice with the crispy and "
@@ -107,6 +108,7 @@ const List<Food> availableFoods = [
     image: "assets/images/amala.jpg",
     price: 1800,
     rating: 4.0,
+    id: 5,
     description:
         "Indulge in the rich flavors of Nigeria with our Amala and Goat Meat Delight! "
         "Amala, a traditional Yoruba dish, is made from fermented cassava flour or plantain flour, "
@@ -152,6 +154,7 @@ const List<Food> availableFoods = [
     image: "assets/images/porridge.jpg",
     price: 1300,
     rating: 4.2,
+    id: 6,
     description: "Start your day with a nutritious and delicious bowl of our "
         "Nourishing Porridge with Vegetables! Our porridge is made with wholesome "
         "ingredients and cooked to perfection, creating a creamy and "
@@ -202,6 +205,7 @@ const List<Food> availableFoods = [
     image: "assets/images/white rice.jpg",
     price: 1500,
     rating: 4.5,
+    id: 7,
     description:
         "Enjoy a flavorful and nutritious meal with our Rice and Beans "
         "Delight with Fried Stew! Our white rice is cooked to perfection, fluffy and light, "
@@ -249,6 +253,7 @@ const List<Food> availableFoods = [
     image: "assets/images/yam.jpeg",
     price: 1600,
     rating: 4.5,
+    id: 8,
     description: "Enjoy a classic Nigerian breakfast with our Yam and Fried "
         "Eggs Delight! Our yam is carefully selected and cooked to perfection, creating a "
         "deliciously tender and slightly sweet texture that pairs perfectly with "
@@ -294,6 +299,7 @@ const List<Food> availableFoods = [
     image: "assets/images/pounded yam.jpg",
     price: 2000,
     rating: 4.7,
+    id: 9,
     description:
         "Enjoy a traditional Nigerian meal with our Pounded Yam Delight with Egusi Soup! "
         "Our pounded yam is made from fresh yams, pounded to perfection to create a smooth and creamy texture "
@@ -337,6 +343,7 @@ const List<Food> availableFoods = [
     image: "assets/images/spag.jpg",
     price: 1200,
     rating: 4.8,
+    id: 10,
     description: "Indulge in a classic Italian favorite with our Spaghetti "
         "Bolognese Delight! Our spaghetti is cooked al dente, then tossed in a rich and "
         "savory bolognese sauce made with ground beef, tomatoes, and herbs. The result is a "
@@ -386,6 +393,7 @@ const List<Food> availableFoods = [
     image: "assets/images/c and c.jpg",
     price: 1800,
     rating: 4.2,
+    id: 11,
     description:
         "Enjoy a classic comfort food favorite with our Crispy Chicken "
         "and Chips Delight! Our juicy chicken breast is breaded and fried to perfection, "
@@ -432,6 +440,7 @@ const List<Food> availableFoods = [
       image: "assets/images/salad.jpg",
       price: 1000,
       rating: 4.1,
+      id: 12,
       description:
           "Enjoy a sweet and refreshing treat with our Fresh Fruit Salad Delight! "
           "Our fruit salad is made with a variety of fresh fruits, carefully selected and "

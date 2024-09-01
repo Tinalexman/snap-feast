@@ -61,6 +61,10 @@ class _SnapFeastState extends ConsumerState<SnapFeast>
     super.dispose();
   }
 
+  void load() {
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -84,50 +88,4 @@ class _SnapFeastState extends ConsumerState<SnapFeast>
     );
   }
 
-  Future<void> load() async {
-    List<Transaction> transactions = ref.watch(transactionsProvider);
-    List<FoodOrder> orders = ref.watch(foodOrdersProvider);
-    User user = ref.watch(userProvider);
-
-    OrderRepository orderRepository = GetIt.I.get();
-    await orderRepository.deleteAll();
-    await orderRepository.addAll(orders);
-
-    TransactionRepository transactionRepository = GetIt.I.get();
-    await transactionRepository.deleteAll();
-    await transactionRepository.addAll(transactions);
-
-    UserRepository userRepository = GetIt.I.get();
-    await userRepository.saveMainUser(user);
-  }
-
-  Future<void> save() async {
-    OrderRepository orderRepository = GetIt.I.get();
-    TransactionRepository transactionRepository = GetIt.I.get();
-    UserRepository userRepository = GetIt.I.get();
-
-    List<FoodOrder> orders = await orderRepository.getAll();
-    List<Transaction> transactions = await transactionRepository.getAll();
-    User? user = await userRepository.getMainUser();
-
-    ref.watch(foodOrdersProvider.notifier).state.clear();
-    ref.watch(foodOrdersProvider.notifier).state.addAll(orders);
-
-    ref.watch(transactionsProvider.notifier).state.clear();
-    ref.watch(transactionsProvider.notifier).state.addAll(transactions);
-
-    if (user != null) {
-      ref.watch(userProvider.notifier).state = user;
-    }
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.paused) {
-      await load();
-    } else if (state == AppLifecycleState.resumed) {
-      await save();
-    }
-  }
 }

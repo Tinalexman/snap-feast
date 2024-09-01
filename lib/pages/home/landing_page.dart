@@ -37,7 +37,7 @@ class _LandingPageState extends ConsumerState<LandingPage> {
   @override
   Widget build(BuildContext context) {
     int index = ref.watch(dashboardIndex);
-    String image = ref.watch(userProvider).image;
+    String image = ref.watch(userProvider).email;
 
     return PopScope(
       canPop: false,

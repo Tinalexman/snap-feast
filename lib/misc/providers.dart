@@ -8,8 +8,6 @@ import 'package:snapfeast/components/user.dart';
 import 'package:snapfeast/misc/constants.dart';
 
 const User dummyUser = User(
-  id: "DUMMY",
-  image: "Dummy Image",
   firstName: "John",
   lastName: "Doe",
   age: 22,

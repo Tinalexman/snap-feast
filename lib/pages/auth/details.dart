@@ -1,21 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snapfeast/api/user_service.dart';
 import 'package:snapfeast/components/food.dart';
+import 'package:snapfeast/components/user.dart';
 import 'package:snapfeast/misc/constants.dart';
+import 'package:snapfeast/misc/functions.dart';
+import 'package:snapfeast/misc/providers.dart';
+import 'package:snapfeast/misc/widgets.dart';
 
-class AccountDetailsPage extends StatefulWidget {
+class AccountDetailsPage extends ConsumerStatefulWidget {
   final Map<String, dynamic> details;
+
   const AccountDetailsPage({
     super.key,
     required this.details,
   });
 
   @override
-  State<AccountDetailsPage> createState() => _AccountDetailsPageState();
+  ConsumerState<AccountDetailsPage> createState() => _AccountDetailsPageState();
 }
 
-class _AccountDetailsPageState extends State<AccountDetailsPage> {
-  final List<String> pickedFoods = [];
+class _AccountDetailsPageState extends ConsumerState<AccountDetailsPage> {
+  late List<String> pickedFoods;
+
+  bool loading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    List<String>? picked = widget.details["preferences"];
+    if(picked == null) {
+      pickedFoods = [];
+      widget.details["preferences"] = pickedFoods;
+    } else {
+      pickedFoods = picked;
+    }
+  }
+
+
+  void showErrorMessage(String msg) => showToast(msg, context);
+  void navigate() => context.router.pushNamed(Pages.faceCapture);
+
+
+  Future<void> createAccount() async {
+    SnapfeastResponse<User?> user = await createUser(widget.details);
+    setState(() => loading = false);
+
+    if(!user.success) {
+      showErrorMessage(user.message);
+      return;
+    }
+
+    ref.watch(userProvider.notifier).state = user.data!;
+    navigate();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +100,7 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                       Food food = availableFoods[index];
                       String image = food.image;
                       bool picked = pickedFoods.contains(food.name);
-            
+
                       return Column(
                         children: [
                           if (index % 2 == 1) SizedBox(height: 30.h),
@@ -81,54 +121,53 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                                 image: DecorationImage(
                                   image: AssetImage(image),
                                   fit: BoxFit.cover,
+                                  colorFilter: const ColorFilter.mode(
+                                    Colors.black45,
+                                    BlendMode.darken,
+                                  ),
                                 ),
                               ),
                               child: Stack(
                                 children: [
-                                  Container(
-                                    width: 390.w,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black54,
-                                      borderRadius: BorderRadius.circular(15.r),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 10.w,
-                                            vertical: 10.h,
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 10.w,
+                                          vertical: 10.h,
+                                        ),
+                                        child: Text(
+                                          food.name,
+                                          style: context.textTheme.bodyLarge!
+                                              .copyWith(
+                                            fontFamily: "Montserrat",
+                                            fontWeight: FontWeight.w700,
+                                            color: Colors.white,
                                           ),
-                                          child: Text(
-                                            food.name,
-                                            style: context.textTheme.bodyLarge!
-                                                .copyWith(
-                                              fontFamily: "Montserrat",
-                                              fontWeight: FontWeight.w700,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        )
-                                      ],
-                                    ),
+                                        ),
+                                      )
+                                    ],
                                   ),
                                   Positioned(
                                     top: 0.h,
                                     right: -1.w,
                                     child: AnimatedOpacity(
-                                      duration: const Duration(milliseconds: 200),
+                                      duration:
+                                          const Duration(milliseconds: 200),
                                       opacity: picked ? 1 : 0,
                                       child: ClipPath(
                                         clipper: _PreferenceClipper(5.r),
                                         child: Container(
                                           width: 60.r,
                                           height: 40.r,
-                                          color: Colors.white,
-                                          padding: EdgeInsets.only(right: 7.w, top: 3.h),
+                                          color: p100,
+                                          padding: EdgeInsets.only(
+                                              right: 7.w, top: 3.h),
                                           alignment: Alignment.topRight,
                                           child: Icon(
                                             Icons.done_rounded,
-                                            color: p100,
+                                            color: Colors.white,
                                             size: 20.r,
                                           ),
                                         ),
@@ -157,9 +196,17 @@ class _AccountDetailsPageState extends State<AccountDetailsPage> {
                     ),
                   ),
                   onPressed: () {
-                    // context.router.pushNamed(Pages.home);
+                    if(loading) return;
+
+                    if(pickedFoods.isEmpty) {
+                      showToast("Choose at least one type of food", context);
+                      return;
+                    }
+
+                    setState(() => loading = true);
+                    createAccount();
                   },
-                  child: Text(
+                  child: loading ? whiteLoader : Text(
                     "Create Account",
                     style: context.textTheme.bodyLarge!.copyWith(
                       color: Colors.white,

@@ -7,33 +7,35 @@ import 'package:snapfeast/misc/constants.dart';
 
 void showToast(String message, BuildContext context) {
   HapticFeedback.vibrate();
+
   AnimatedSnackBar snackBar = AnimatedSnackBar(
     builder: (context) => ConstrainedBox(
       constraints: BoxConstraints(
-        maxWidth: 220.w,
-        minHeight: 40.h,
+        maxWidth: 250.w,
       ),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 5.h),
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: p100,
-          borderRadius: BorderRadius.circular(5.r),
+          borderRadius: BorderRadius.circular(7.5.r),
         ),
-        alignment: Alignment.center,
-        child: Text(
-          message,
-          style: context.textTheme.bodySmall!.copyWith(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-            fontFamily: "Montserrat",
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+          child: Text(
+            message,
+            style: context.textTheme.bodySmall!.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w600,
+              fontFamily: "Montserrat",
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
     ),
-    mobileSnackBarPosition: MobileSnackBarPosition.bottom,
+    mobileSnackBarPosition: MobileSnackBarPosition.top,
     animationCurve: Curves.ease,
     snackBarStrategy: RemoveSnackBarStrategy(),
-    duration: const Duration(seconds: 4),
+    duration: const Duration(seconds: 3),
     animationDuration: const Duration(milliseconds: 350),
   );
   snackBar.show(context);
