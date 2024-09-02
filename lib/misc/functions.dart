@@ -6,6 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:snapfeast/misc/constants.dart';
 
 void showToast(String message, BuildContext context) {
+  if(!context.mounted) return;
+
   HapticFeedback.vibrate();
 
   AnimatedSnackBar snackBar = AnimatedSnackBar(
@@ -38,6 +40,7 @@ void showToast(String message, BuildContext context) {
     duration: const Duration(seconds: 3),
     animationDuration: const Duration(milliseconds: 350),
   );
+
   snackBar.show(context);
 }
 

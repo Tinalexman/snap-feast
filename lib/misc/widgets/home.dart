@@ -20,11 +20,17 @@ class FoodDisplay extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         if (ref.watch(foodProvider) != food) {
-          ref.watch(foodCountProvider.notifier).state = 0;
+          ref
+              .watch(foodCountProvider.notifier)
+              .state = 0;
         }
 
-        ref.watch(foodProvider.notifier).state = food;
-        ref.watch(dashboardIndex.notifier).state = 1;
+        ref
+            .watch(foodProvider.notifier)
+            .state = food;
+        ref
+            .watch(dashboardIndex.notifier)
+            .state = 1;
       },
       child: SizedBox(
         width: 140.w,
@@ -39,27 +45,18 @@ class FoodDisplay extends ConsumerWidget {
                 image: DecorationImage(
                   image: AssetImage(food.image),
                   fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black45, BlendMode.darken,),
                 ),
               ),
-              child: Container(
-                height: 140.h,
-                width: 140.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.r),
-                  color: Colors.black54,
-                ),
-                padding: EdgeInsets.symmetric(
-                  horizontal: 10.w,
-                  vertical: 5.h,
-                ),
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  food.name,
-                  style: context.textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    fontFamily: "Montserrat",
-                    color: Colors.white,
-                  ),
+              padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 10.h,),
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                food.name,
+                style: context.textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Montserrat",
+                  color: Colors.white,
                 ),
               ),
             ),
@@ -189,7 +186,9 @@ class FoodOrderReceipt extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    "${currency()} ${format(food.price * order.servings)} (${order.servings} servings)",
+                    "${currency()} ${format(
+                        food.price * order.servings)} (${order
+                        .servings} servings)",
                     style: context.textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                       fontFamily: "Montserrat",

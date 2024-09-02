@@ -331,6 +331,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                             ),
                           ),
                           SizedBox(height: 50.h),
+                          if(pickedImage != null)
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size(390.w, 50.h),

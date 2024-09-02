@@ -1,7 +1,9 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snapfeast/api/food_service.dart';
 import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/components/order.dart';
 import 'package:snapfeast/misc/constants.dart';
@@ -17,19 +19,32 @@ class Homepage extends ConsumerStatefulWidget {
 }
 
 class _HomepageState extends ConsumerState<Homepage> {
-  late Food recommendedFood;
+  Food? recommendedFood;
 
   @override
   void initState() {
     super.initState();
-    Random random = Random(DateTime.now().millisecondsSinceEpoch);
-    int index = random.nextInt(availableFoods.length);
-    recommendedFood = availableFoods[index];
 
     Future.delayed(
-      const Duration(milliseconds: 500),
-      () => ref.watch(foodProvider.notifier).state = recommendedFood,
+      Duration.zero,
+      recommendedFoodOfTheDay,
     );
+  }
+
+  void showErrorMessage(String msg) => showToast(msg, context);
+
+  Future<void> recommendedFoodOfTheDay() async {
+    SnapfeastResponse<List<Food>?> food = await getRecommendation();
+    if (!food.success || food.data == null) {
+      showErrorMessage("Unable to get the recommended food. Retrying");
+      recommendedFoodOfTheDay();
+      return;
+    }
+
+    Random random = Random(DateTime.now().millisecondsSinceEpoch);
+    int index = random.nextInt(food.data!.length);
+    recommendedFood = food.data![index];
+    setState(() {});
   }
 
   @override
@@ -61,57 +76,47 @@ class _HomepageState extends ConsumerState<Homepage> {
             SizedBox(height: 20.h),
             GestureDetector(
               onTap: () {
+                if(recommendedFood == null) return;
+
                 if (ref.watch(foodProvider) != recommendedFood) {
                   ref.watch(foodCountProvider.notifier).state = 0;
                 }
-                ref.watch(foodProvider.notifier).state = recommendedFood;
+                ref.watch(foodProvider.notifier).state = recommendedFood!;
                 ref.watch(dashboardIndex.notifier).state = 1;
               },
               child: Container(
                 height: 170.h,
                 width: 390.w,
+                alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.r),
-                  image: DecorationImage(
-                    image: AssetImage(recommendedFood.image),
+                  image: recommendedFood != null ? DecorationImage(
+                    image: AssetImage(recommendedFood!.image),
                     fit: BoxFit.cover,
-                  ),
+                    colorFilter: const ColorFilter.mode(
+                      Colors.black45,
+                      BlendMode.darken,
+                    ),
+                  ) : null,
                 ),
-                child: Stack(
+                child: recommendedFood == null ? loader : Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      width: 390.w,
-                      height: 170.h,
-                      decoration: BoxDecoration(
-                        color: Colors.black54,
-                        borderRadius: BorderRadius.circular(15.r),
+                    Text(
+                      "Recommended meal of the day",
+                      style: context.textTheme.bodyMedium!.copyWith(
+                        color: Colors.white,
+                        fontFamily: "Montserrat",
                       ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 10.w,
-                        vertical: 10.h,
+                    ),
+                    Text(
+                      recommendedFood!.name,
+                      style: context.textTheme.headlineMedium!.copyWith(
+                        fontFamily: "Montserrat",
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
                       ),
-                      alignment: Alignment.center,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Recommended meal of the day",
-                            style: context.textTheme.bodyMedium!.copyWith(
-                              color: Colors.white,
-                              fontFamily: "Montserrat",
-                            ),
-                          ),
-                          Text(
-                            recommendedFood.name,
-                            style: context.textTheme.headlineMedium!.copyWith(
-                              fontFamily: "Montserrat",
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),
