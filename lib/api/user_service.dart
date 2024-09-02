@@ -115,7 +115,17 @@ Future<SnapfeastResponse<User?>> faceLogin(String facePath) async {
         },
       ),
     );
-    Map<String, dynamic> data = response.data;
+
+    token = response.data["access_token"];
+
+    Response userResponse = await dio.get(
+      "/users/me/",
+      options: Options(
+        headers: {"Authorization": "Bearer $token"},
+      ),
+    );
+    Map<String, dynamic> data = userResponse.data;
+
     return SnapfeastResponse(
       message: "Success",
       data: User(
@@ -126,6 +136,7 @@ Future<SnapfeastResponse<User?>> faceLogin(String facePath) async {
       ),
       success: true,
     );
+
   } catch (e) {
     log("Face Login Error: $e");
   }
@@ -142,7 +153,7 @@ Future<SnapfeastResponse> createFace(String facePath) async {
   form.files.add(MapEntry("file", await MultipartFile.fromFile(facePath)));
 
   try {
-    Response response = await dio.post(
+    await dio.post(
       "/users/me/face/",
       data: form,
       options: Options(
@@ -153,8 +164,6 @@ Future<SnapfeastResponse> createFace(String facePath) async {
       ),
     );
 
-    log("${response.data}");
-    // Map<String, dynamic> data = response.data;
     return const SnapfeastResponse(
       message: "Success",
       success: true,

@@ -70,7 +70,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
   }
 
   Future<void> useFaceLogin() async {
-    SnapfeastResponse face = await createFace(pickedImage!);
+    SnapfeastResponse face = await faceLogin(pickedImage!);
     setState(() => loading = false);
 
     if (!face.success) {
@@ -78,8 +78,9 @@ class _LoginPageState extends ConsumerState<LoginPage>
       return;
     }
 
-    showErrorMessage("Face embeddings created!");
+    showErrorMessage("Welcome back!");
 
+    ref.watch(userProvider.notifier).state = face.data!;
     navigate();
   }
 
@@ -271,7 +272,7 @@ class _LoginPageState extends ConsumerState<LoginPage>
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(height: 40.h),
+                          SizedBox(height: 20.h),
                           GestureDetector(
                             onTap: () => showDialog(
                               context: context,
@@ -281,8 +282,11 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                     .pushNamed(Pages.camera)
                                     .then((response) async {
                                   if (response == null) return;
-
-                                  navigate();
+                                  setState(() {
+                                    pickedImage = (response as File).path;
+                                    loading = true;
+                                  });
+                                  useFaceLogin();
                                 }),
                               ),
                             ),
@@ -326,7 +330,35 @@ class _LoginPageState extends ConsumerState<LoginPage>
                                   : null,
                             ),
                           ),
-                          SizedBox(height: 40.h),
+                          SizedBox(height: 50.h),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(390.w, 50.h),
+                              backgroundColor: p100,
+                              elevation: 1.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.h),
+                              ),
+                            ),
+                            onPressed: () {
+                              if (loading) return;
+
+                              setState(() => loading = true);
+                              useFaceLogin();
+                            },
+                            child: loading
+                                ? whiteLoader
+                                : Text(
+                              "Retry",
+                              style:
+                              context.textTheme.bodyLarge!.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700,
+                                fontFamily: "Montserrat",
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 20.h),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
