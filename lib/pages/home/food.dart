@@ -28,7 +28,7 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
     DateTime timestamp = DateTime.now();
 
     FoodOrder order = FoodOrder(
-      foodIndex: availableFoods.indexOf(food),
+      foodIndex: food.id,
       servings: count,
     );
 
