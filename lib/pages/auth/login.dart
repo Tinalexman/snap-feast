@@ -63,8 +63,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
       return;
     }
 
-    showErrorMessage("Welcome back!");
-
     ref.watch(userProvider.notifier).state = user.data!;
     navigate();
   }
@@ -77,8 +75,6 @@ class _LoginPageState extends ConsumerState<LoginPage>
       showErrorMessage(face.message);
       return;
     }
-
-    showErrorMessage("Welcome back!");
 
     ref.watch(userProvider.notifier).state = face.data!;
     navigate();

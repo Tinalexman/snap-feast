@@ -6,6 +6,8 @@ import 'package:snapfeast/misc/constants.dart';
 import 'package:snapfeast/misc/providers.dart';
 import 'package:snapfeast/misc/widgets.dart';
 
+import 'dart:developer';
+
 class FoodOrdersPage extends ConsumerStatefulWidget {
   const FoodOrdersPage({super.key});
 
@@ -17,6 +19,7 @@ class _FoodOrdersPageState extends ConsumerState<FoodOrdersPage> {
   @override
   Widget build(BuildContext context) {
     List<FoodOrder> orders = ref.watch(foodOrdersProvider);
+    log("orders: ${orders.length}");
 
     return Scaffold(
       appBar: AppBar(
@@ -32,7 +35,7 @@ class _FoodOrdersPageState extends ConsumerState<FoodOrdersPage> {
         centerTitle: true,
         title: Text(
           "Orders",
-          style: context.textTheme.headlineSmall!.copyWith(
+          style: context.textTheme.titleLarge!.copyWith(
             fontFamily: "Montserrat",
             fontWeight: FontWeight.w600,
           ),

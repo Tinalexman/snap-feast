@@ -77,91 +77,12 @@ class _DepositPageState extends ConsumerState<DepositPage> {
                   width: 390.w,
                   height: 40.h,
                   type: TextInputType.number,
-                  prefix: Icon(
-                    Icons.numbers_rounded,
-                    color: p100,
-                    size: 18.r,
+                  prefix: Text(
+                    "₦",
+                    style: context.textTheme.titleMedium,
                   ),
-                  hint: "10,000",
+                  hint: "1,000",
                 ),
-                // SizedBox(height: 20.h),
-                // Text(
-                //   "Card Number",
-                //   style: context.textTheme.bodyMedium!.copyWith(
-                //     fontFamily: "Montserrat",
-                //     color: p150,
-                //   ),
-                // ),
-                // SizedBox(height: 5.h),
-                // SpecialForm(
-                //   controller: numberController,
-                //   width: 390.w,
-                //   height: 40.h,
-                //   type: TextInputType.number,
-                //   prefix: Icon(
-                //     Icons.numbers_rounded,
-                //     color: p100,
-                //     size: 18.r,
-                //   ),
-                //   hint: "0000 0000 0000 0000",
-                // ),
-                // SizedBox(height: 20.h),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: [
-                //     Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           "Expiry Date",
-                //           style: context.textTheme.bodyMedium!.copyWith(
-                //             fontFamily: "Montserrat",
-                //             color: p150,
-                //           ),
-                //         ),
-                //         SizedBox(height: 5.h),
-                //         SpecialForm(
-                //           controller: expiryController,
-                //           width: 150.w,
-                //           height: 40.h,
-                //           type: TextInputType.number,
-                //           prefix: Icon(
-                //             Icons.numbers_rounded,
-                //             color: p100,
-                //             size: 18.r,
-                //           ),
-                //           hint: "DD / YY",
-                //         )
-                //       ],
-                //     ),
-                //     Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       children: [
-                //         Text(
-                //           "CVV",
-                //           style: context.textTheme.bodyMedium!.copyWith(
-                //             fontFamily: "Montserrat",
-                //             color: p150,
-                //           ),
-                //         ),
-                //         SizedBox(height: 5.h),
-                //         SpecialForm(
-                //           controller: cvvController,
-                //           width: 150.w,
-                //           height: 40.h,
-                //           type: TextInputType.number,
-                //           prefix: Icon(
-                //             Icons.numbers_rounded,
-                //             color: p100,
-                //             size: 18.r,
-                //           ),
-                //           hint: "123",
-                //         )
-                //       ],
-                //     ),
-                //   ],
-                // ),
                 SizedBox(height: 150.h),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -174,7 +95,7 @@ class _DepositPageState extends ConsumerState<DepositPage> {
                   ),
                   onPressed: () {
                     double? amount = double.tryParse(amountController.text);
-                    if(amount == null) return;
+                    if (amount == null) return;
 
                     Transaction transaction = Transaction(
                       timestamp: DateTime.now(),
@@ -183,7 +104,13 @@ class _DepositPageState extends ConsumerState<DepositPage> {
                     );
 
                     ref.watch(walletProvider.notifier).state += amount;
-                    ref.watch(transactionsProvider.notifier).state.add(transaction);
+                    List<Transaction> transactions =
+                        ref.watch(transactionsProvider);
+                    ref.watch(transactionsProvider.notifier).state = [
+                      ...transactions,
+                      transaction,
+                    ];
+
                     context.router.pop();
                   },
                   child: Text(

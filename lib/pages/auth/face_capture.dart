@@ -35,8 +35,6 @@ class _FaceCaptureState extends State<FaceCapture> {
       return;
     }
 
-    showErrorMessage("Face embeddings created!");
-
     navigate();
   }
 

@@ -1,15 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:snapfeast/api/food_service.dart';
 import 'package:snapfeast/components/food.dart';
 import 'package:snapfeast/components/order.dart';
 import 'package:snapfeast/components/transaction.dart';
 import 'package:snapfeast/misc/constants.dart';
 import 'package:snapfeast/misc/functions.dart';
 import 'package:snapfeast/misc/providers.dart';
+import 'package:snapfeast/misc/widgets.dart';
 
 class OrdersPage extends ConsumerStatefulWidget {
   const OrdersPage({super.key});
@@ -19,7 +19,55 @@ class OrdersPage extends ConsumerStatefulWidget {
 }
 
 class _OrdersPageState extends ConsumerState<OrdersPage> {
-  bool liked = true;
+  bool liked = true, loading = false;
+
+
+  void showErrorMessage(String msg) => showToast(msg, context);
+
+  void navigate(Food food, int count, double price) {
+    DateTime timestamp = DateTime.now();
+
+    FoodOrder order = FoodOrder(
+      foodIndex: availableFoods.indexOf(food),
+      servings: count,
+    );
+
+    Transaction transaction = Transaction(
+      timestamp: timestamp,
+      type: TransactionType.debit,
+      amount: price,
+    );
+
+    List<FoodOrder> orders = ref.watch(foodOrdersProvider);
+    ref.watch(foodOrdersProvider.notifier).state = [
+      ...orders,
+      order,
+    ];
+
+    List<Transaction> transactions =
+    ref.watch(transactionsProvider);
+    ref.watch(transactionsProvider.notifier).state = [
+      ...transactions,
+      transaction,
+    ];
+
+    ref.watch(walletProvider.notifier).state -= price;
+    ref.watch(foodCountProvider.notifier).state = 0;
+    ref.watch(dashboardIndex.notifier).state = 0;
+  }
+
+  Future<void> useCreateOrder(Food food, int count, double price) async {
+    SnapfeastResponse order = await createOrder(count, food.id);
+    setState(() => loading = false);
+
+    if (!order.success) {
+      showErrorMessage(order.message);
+      return;
+    }
+
+    showErrorMessage("Order created!");
+    navigate(food, count, price);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -449,36 +497,20 @@ class _OrdersPageState extends ConsumerState<OrdersPage> {
                     showDialog(
                       context: context,
                       builder: (_) => FundsDialog(
-                        onProceed: () => context.router.pushNamed(Pages.deposit),
+                        onProceed: () =>
+                            context.router.pushNamed(Pages.deposit),
                       ),
                     );
                     return;
                   } else {
-                    DateTime timestamp = DateTime.now();
-
-                    FoodOrder order = FoodOrder(
-                      foodIndex: availableFoods.indexOf(food),
-                      servings: count,
-                      timestamp: timestamp,
-                    );
-
-                    Transaction transaction = Transaction(
-                      timestamp: timestamp,
-                      type: TransactionType.debit,
-                      amount: price,
-                    );
-
-                    ref.watch(foodOrdersProvider).add(order);
-                    ref
-                        .watch(transactionsProvider.notifier)
-                        .state
-                        .add(transaction);
-                    ref.watch(walletProvider.notifier).state -= price;
-                    ref.watch(foodCountProvider.notifier).state = 0;
-                    ref.watch(dashboardIndex.notifier).state = 0;
+                    if(loading) return;
+                    setState(() => loading = true);
+                    useCreateOrder(food, count, price);
                   }
                 },
-                child: Text(
+                child: loading
+                    ? whiteLoader
+                    : Text(
                   "Pay ${currency()} ${formatRawAmount(food.price * count)}",
                   style: context.textTheme.bodyLarge!.copyWith(
                     color: Colors.white,
@@ -508,61 +540,63 @@ class FundsDialog extends StatelessWidget {
     return Dialog(
       elevation: 0.0,
       backgroundColor: Colors.transparent,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-        height: 200.h,
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(15.r),
         ),
-        child: Column(
-          children: [
-            Text(
-              "Note",
-              style: context.textTheme.headlineSmall!.copyWith(
-                fontWeight: FontWeight.bold,
-                fontFamily: "Montserrat",
-              ),
-            ),
-            SizedBox(height: 20.h),
-            Text(
-              "You do not have enough funds to continue with this transaction. Proceed to deposit?",
-              style: context.textTheme.bodyMedium!.copyWith(
-                fontWeight: FontWeight.w500,
-                fontFamily: "Montserrat",
-              ),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 40.h),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
-                  child: Text(
-                    "Cancel",
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontFamily: "Montserrat",
-                    ),
-                  ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                "Note",
+                style: context.textTheme.headlineSmall!.copyWith(
+                  fontWeight: FontWeight.bold,
+                  fontFamily: "Montserrat",
                 ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    onProceed();
-                  },
-                  child: Text(
-                    "Proceed",
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Montserrat",
+              ),
+              SizedBox(height: 20.h),
+              Text(
+                "You do not have enough funds to continue with this transaction. Proceed to deposit?",
+                style: context.textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontFamily: "Montserrat",
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: 20.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Text(
+                      "Cancel",
+                      style: context.textTheme.bodyMedium!.copyWith(
+                        fontFamily: "Montserrat",
+                      ),
                     ),
                   ),
-                )
-              ],
-            )
-          ],
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      onProceed();
+                    },
+                    child: Text(
+                      "Proceed",
+                      style: context.textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Montserrat",
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

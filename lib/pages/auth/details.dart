@@ -52,8 +52,6 @@ class _AccountDetailsPageState extends ConsumerState<AccountDetailsPage> {
       return;
     }
 
-    showErrorMessage("Account created!");
-
     ref.watch(userProvider.notifier).state = user.data!;
     navigate();
   }

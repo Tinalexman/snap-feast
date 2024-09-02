@@ -36,7 +36,7 @@ class _WalletPageState extends ConsumerState<WalletPage> {
         centerTitle: true,
         title: Text(
           "Wallet",
-          style: context.textTheme.headlineSmall!.copyWith(
+          style: context.textTheme.titleLarge!.copyWith(
             fontFamily: "Montserrat",
             fontWeight: FontWeight.w600,
           ),
@@ -49,7 +49,7 @@ class _WalletPageState extends ConsumerState<WalletPage> {
             SizedBox(height: 20.h),
             Container(
               width: 390.w,
-              height: 150.h,
+              height: 120.h,
               decoration: BoxDecoration(
                 color: p100,
                 borderRadius: BorderRadius.circular(15.r),
@@ -76,15 +76,6 @@ class _WalletPageState extends ConsumerState<WalletPage> {
                       fontFamily: "Montserrat",
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(height: 15.h),
-                  Text(
-                    "Last Funded: ${formatDateRaw(DateTime.now())}",
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontFamily: "Montserrat",
-                      color: Colors.white60,
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

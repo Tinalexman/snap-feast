@@ -23,7 +23,6 @@ class DatabaseManager {
         await db.execute('''
    CREATE TABLE ${OrderRepository.ordersTable} (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
-     timestamp INTEGER NOT NULL,
      foodIndex INTEGER NOT NULL,
      servings INTEGER NOT NULL
    )

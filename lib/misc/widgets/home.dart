@@ -20,17 +20,11 @@ class FoodDisplay extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         if (ref.watch(foodProvider) != food) {
-          ref
-              .watch(foodCountProvider.notifier)
-              .state = 0;
+          ref.watch(foodCountProvider.notifier).state = 0;
         }
 
-        ref
-            .watch(foodProvider.notifier)
-            .state = food;
-        ref
-            .watch(dashboardIndex.notifier)
-            .state = 1;
+        ref.watch(foodProvider.notifier).state = food;
+        ref.watch(dashboardIndex.notifier).state = 1;
       },
       child: SizedBox(
         width: 140.w,
@@ -46,10 +40,16 @@ class FoodDisplay extends ConsumerWidget {
                   image: AssetImage(food.image),
                   fit: BoxFit.cover,
                   colorFilter: ColorFilter.mode(
-                    Colors.black45, BlendMode.darken,),
+                    Colors.black45,
+                    BlendMode.darken,
+                  ),
                 ),
               ),
-              padding: EdgeInsets.only(left: 5.w, right: 5.w, bottom: 10.h,),
+              padding: EdgeInsets.only(
+                left: 5.w,
+                right: 5.w,
+                bottom: 10.h,
+              ),
               alignment: Alignment.bottomCenter,
               child: Text(
                 food.name,
@@ -110,7 +110,10 @@ class FoodOrderReceipt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Food food = availableFoods[order.foodIndex];
+    Food food = availableFoods.firstWhere(
+      (element) => element.id == order.foodIndex,
+      orElse: () => const Food(),
+    );
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -119,7 +122,7 @@ class FoodOrderReceipt extends StatelessWidget {
         border: Border.all(color: neutral2),
       ),
       child: SizedBox(
-        height: 180.h,
+        height: 160.h,
         child: Column(
           children: [
             Container(
@@ -186,20 +189,10 @@ class FoodOrderReceipt extends StatelessWidget {
                   ),
                   SizedBox(height: 2.h),
                   Text(
-                    "${currency()} ${format(
-                        food.price * order.servings)} (${order
-                        .servings} servings)",
+                    "${currency()} ${format(food.price * order.servings)} (${order.servings} servings)",
                     style: context.textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                       fontFamily: "Montserrat",
-                    ),
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    formatDateRaw(order.timestamp),
-                    style: context.textTheme.bodyMedium!.copyWith(
-                      fontFamily: "Montserrat",
-                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ],

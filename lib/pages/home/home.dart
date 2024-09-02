@@ -20,6 +20,7 @@ class Homepage extends ConsumerStatefulWidget {
 
 class _HomepageState extends ConsumerState<Homepage> {
   Food? recommendedFood;
+  bool loadingOrders = true;
 
   @override
   void initState() {
@@ -27,7 +28,10 @@ class _HomepageState extends ConsumerState<Homepage> {
 
     Future.delayed(
       Duration.zero,
-      recommendedFoodOfTheDay,
+      () {
+        recommendedFoodOfTheDay();
+        foodOrderList();
+      },
     );
   }
 
@@ -44,6 +48,19 @@ class _HomepageState extends ConsumerState<Homepage> {
     Random random = Random(DateTime.now().millisecondsSinceEpoch);
     int index = random.nextInt(food.data!.length);
     recommendedFood = food.data![index];
+    setState(() {});
+  }
+
+  Future<void> foodOrderList() async {
+    SnapfeastResponse<List<FoodOrder>?> orders = await getOrders();
+    if (!orders.success || orders.data == null) {
+      showErrorMessage("Unable to get the food orders. Retrying");
+      foodOrderList();
+      return;
+    }
+
+    loadingOrders = false;
+    ref.watch(foodOrdersProvider.notifier).state = orders.data!;
     setState(() {});
   }
 
@@ -76,7 +93,7 @@ class _HomepageState extends ConsumerState<Homepage> {
             SizedBox(height: 20.h),
             GestureDetector(
               onTap: () {
-                if(recommendedFood == null) return;
+                if (recommendedFood == null) return;
 
                 if (ref.watch(foodProvider) != recommendedFood) {
                   ref.watch(foodCountProvider.notifier).state = 0;
@@ -90,36 +107,40 @@ class _HomepageState extends ConsumerState<Homepage> {
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.r),
-                  image: recommendedFood != null ? DecorationImage(
-                    image: AssetImage(recommendedFood!.image),
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                      Colors.black45,
-                      BlendMode.darken,
-                    ),
-                  ) : null,
+                  image: recommendedFood != null
+                      ? DecorationImage(
+                          image: AssetImage(recommendedFood!.image),
+                          fit: BoxFit.cover,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.black45,
+                            BlendMode.darken,
+                          ),
+                        )
+                      : null,
                 ),
-                child: recommendedFood == null ? loader : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Recommended meal of the day",
-                      style: context.textTheme.bodyMedium!.copyWith(
-                        color: Colors.white,
-                        fontFamily: "Montserrat",
+                child: recommendedFood == null
+                    ? loader
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Recommended meal of the day",
+                            style: context.textTheme.bodyMedium!.copyWith(
+                              color: Colors.white,
+                              fontFamily: "Montserrat",
+                            ),
+                          ),
+                          Text(
+                            recommendedFood!.name,
+                            style: context.textTheme.headlineMedium!.copyWith(
+                              fontFamily: "Montserrat",
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
-                    ),
-                    Text(
-                      recommendedFood!.name,
-                      style: context.textTheme.headlineMedium!.copyWith(
-                        fontFamily: "Montserrat",
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
               ),
             ),
             SizedBox(height: 20.h),
@@ -153,7 +174,7 @@ class _HomepageState extends ConsumerState<Homepage> {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-                if (orders.isNotEmpty)
+                if (orders.length > 1)
                   GestureDetector(
                     onTap: () => context.router.pushNamed(Pages.orders),
                     child: Text(
@@ -170,20 +191,23 @@ class _HomepageState extends ConsumerState<Homepage> {
               ],
             ),
             SizedBox(height: 10.h),
-            orders.isNotEmpty
-                ? FoodOrderReceipt(order: orders.first)
-                : SizedBox(
-                    height: 40.h,
-                    child: Center(
-                      child: Text(
-                        "No orders yet",
-                        style: context.textTheme.bodyLarge!.copyWith(
-                          fontFamily: "Montserrat",
-                          fontWeight: FontWeight.w400,
+            if (orders.isNotEmpty) FoodOrderReceipt(order: orders.first),
+            if (loadingOrders || orders.isEmpty)
+              SizedBox(
+                width: 390.w,
+                height: 160.h,
+                child: Center(
+                  child: loadingOrders
+                      ? whiteLoader
+                      : Text(
+                          "No orders yet",
+                          style: context.textTheme.bodyLarge!.copyWith(
+                            fontFamily: "Montserrat",
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
+                ),
+              ),
             SizedBox(height: 40.h),
           ],
         ),
